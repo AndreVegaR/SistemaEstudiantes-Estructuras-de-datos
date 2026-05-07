@@ -37,13 +37,13 @@ public class LinkedList<T> implements IList<T> {
     }
     
     //Mensajes centralizados para excepciones
-    private final String NULO = "El objeto es nulo";
-    private final String INVALIDO = "El índice es inválido";
+    protected final String NULO = "El objeto es nulo";
+    protected final String INVALIDO = "El índice es inválido";
     
     
     
     //Atributos
-    private Nodo<T> inicio = null;
+    protected Nodo<T> inicio = null;
     
     
     
@@ -325,7 +325,7 @@ public class LinkedList<T> implements IList<T> {
      * Método auxiliar que verifica que un índice esté dentro de rango
      * @param i 
      */
-    private void indiceValido(int i) throws ListException{
+    protected void indiceValido(int i) throws ListException{
         if (i < 0 || i >= size()) {
             throw new ListException(INVALIDO);
         }
@@ -337,7 +337,7 @@ public class LinkedList<T> implements IList<T> {
      * Método auxiliar que lanza excepción si el dato es nulo
      * @param o Dato a verificar
      */
-    private void datoNulo(T o) throws ListException{
+    protected void datoNulo(T o) throws ListException{
         if (o == null) {
             throw new ListException(NULO);
         }
