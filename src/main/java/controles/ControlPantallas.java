@@ -15,7 +15,7 @@ public class ControlPantallas {
     
     //Instancia única del control de estudiantes para inyectar a los frames
     private static final ControlEstudiantes ce = ControlEstudiantes.singleton();
-    
+   
     /**
      * Método que regresa el singleton del control
      * para las pantallas

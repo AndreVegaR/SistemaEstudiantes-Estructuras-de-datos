@@ -14,9 +14,6 @@ import listas.CircularLinkedList;
 public class ControlEstudiantes {
     private static ControlEstudiantes instancia;
     private ControlEstudiantes(){}
-    
-    //En una lista enlazada simple circular guarda los estudiantes para ir rotando su rol
-    private CircularLinkedList<Estudiante> listaRoles = new CircularLinkedList();
     private BinarySearchTree<Estudiante> arbolMatriculas = new BinarySearchTree();
     
     /**
@@ -83,7 +80,6 @@ public class ControlEstudiantes {
         }
         try {
             validarDatosEstudiante(estudiante);
-            listaRoles.append(estudiante);
             arbolMatriculas.insert(estudiante);
         } catch (Exception e) {
             throw new ControlException(e);
@@ -102,7 +98,6 @@ public class ControlEstudiantes {
             throw new ControlException("No existe el estudiante");
         }
         try {
-            listaRoles.remove(estudiante);
             arbolMatriculas.remove(estudiante);
         } catch (Exception e) {
             throw new ControlException(e);

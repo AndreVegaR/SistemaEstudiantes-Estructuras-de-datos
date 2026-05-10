@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pantallas;
 
+import controles.Control;
 import javax.swing.JFrame;
 
 /**
@@ -11,5 +8,6 @@ import javax.swing.JFrame;
  * @author Andre
  */
 public class MenuPrincipal extends JFrame {
+    private static final Control control = Control.singleton();
     
 }
