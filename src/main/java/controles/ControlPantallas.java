@@ -2,6 +2,7 @@ package controles;
 
 import java.util.function.Supplier;
 import javax.swing.JFrame;
+import pantallas.MenuPrincipal;
 
 /**
  * Control encargado del flujo de navegación del
@@ -11,6 +12,9 @@ public class ControlPantallas {
     private static ControlPantallas instancia;
     private ControlPantallas(){}
     private JFrame ventanaActual;
+    
+    //Instancia única del control de estudiantes para inyectar a los frames
+    private static final ControlEstudiantes ce = ControlEstudiantes.singleton();
     
     /**
      * Método que regresa el singleton del control
@@ -23,6 +27,16 @@ public class ControlPantallas {
             instancia = new ControlPantallas();
         }
         return instancia;
+    }
+    
+    /** Encapsula qué pantalla debería ser la inicial al arrancar el programa */
+    public void pantallaInicial() {
+        navegarMenuPrincipal();
+    }
+    
+    /** Navega al menú donde se eligen las opciones */
+    public void navegarMenuPrincipal() {
+        navegar(MenuPrincipal::new);
     }
     
     /**

@@ -6,7 +6,7 @@ import listas.ArrayList;
  * Representa un estudiante dentro
  * del sistema
  */
-public class Estudiante {
+public class Estudiante implements Comparable<Estudiante> {
     
     //Atributos
     private String matricula;
@@ -49,6 +49,8 @@ public class Estudiante {
         //this.calificaciones = new ArrayList<>(1);
     }
 
+    public Estudiante() {}
+    
     public String getMatricula() {
         return matricula;
     }
@@ -127,5 +129,15 @@ public class Estudiante {
 
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
+    }
+    
+    @Override
+    public int compareTo(Estudiante otro) {
+        return this.matricula.compareTo(otro.getMatricula());
+    }
+
+    @Override
+    public String toString() {
+        return "Estudiante{" + "matricula=" + matricula + ", nombres=" + nombres + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", telefono=" + telefono + ", correo=" + correo + ", calle=" + calle + ", numero=" + numero + ", colonia=" + colonia + ", ciudad=" + ciudad + '}';
     }
 }
