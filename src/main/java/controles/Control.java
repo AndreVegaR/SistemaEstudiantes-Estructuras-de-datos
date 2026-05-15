@@ -1,5 +1,7 @@
 package controles;
 
+import dominio.Calificacion;
+import dominio.Curso;
 import dominio.Estudiante;
 
 /**
@@ -10,12 +12,6 @@ import dominio.Estudiante;
 public class Control {
     private static Control instancia;
 
-    //Controles que posee
-    private final ControlPantallas cp;
-    private final ControlEstudiantes ce;
-    private final ControlCursos cc;
-    
-    /** Constructor */
     private Control() {
         this.cp = ControlPantallas.singleton();
         this.ce = ControlEstudiantes.singleton();
@@ -35,6 +31,10 @@ public class Control {
         return instancia;
     }
     
+    //Controles que posee
+    private final ControlPantallas cp;
+    private final ControlEstudiantes ce;
+    private final ControlCursos cc;
     
     //CONTROL PANTALLAS//
     /** Encapsula qué pantalla debería ser la inicial al arrancar el programa */
@@ -42,6 +42,7 @@ public class Control {
     
     /** Navega al menú donde se eligen las opciones */
     public void navegarMenuPrincial() {cp.navegarMenuPrincipal(); }
+    
     
     
     //CONTROL ESTUDIANTES
@@ -53,7 +54,7 @@ public class Control {
      * @return el estudiante
      */
     public Estudiante consultarEstudiante(String matricula){ return ce.consultarEstudiante(matricula); }
-    
+     
     /**
      * Agrega un estudiante al sistema. Internamente, lo almacena
      * en las estructuras necesarias para todas las necesidades
@@ -70,4 +71,26 @@ public class Control {
      * @param estudiante a eliminar
      */
     public void eliminarEstudiante(Estudiante estudiante){ ce.eliminarEstudiante(estudiante); }
+    
+    /**
+     * Agrega una calificación para un estudiante
+     * 
+     * @param calificacion a agregar
+     * @param matricula del estudiante
+     * 
+     * @return el estudiante con calificación agregada
+     */
+    public Estudiante agregarCalificacion(Calificacion calificacion, String matricula) {
+        return ce.agregarCalificacion(calificacion, matricula);
+    }
+    
+    
+    
+    //CONTROL CURSOS
+    /**
+     * Agrega el curso al sistema
+     * 
+     * @param curso a agregar
+     */
+    public void agregarCurso(Curso curso) { cc.agregarCurso(curso); }
 }

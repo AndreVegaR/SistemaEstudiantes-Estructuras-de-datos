@@ -1,6 +1,8 @@
 package controles;
 
+import arboles.ArbolAVL;
 import arboles.BinarySearchTree;
+import dominio.Calificacion;
 import dominio.Estudiante;
 import excepciones.ControlException;
 import java.lang.reflect.Field;
@@ -14,10 +16,8 @@ import listas.CircularLinkedList;
 public class ControlEstudiantes {
     private static ControlEstudiantes instancia;
     private ControlEstudiantes(){}
-    
-    //En una lista enlazada simple circular guarda los estudiantes para ir rotando su rol
-    private CircularLinkedList<Estudiante> listaRoles = new CircularLinkedList();
     private BinarySearchTree<Estudiante> arbolMatriculas = new BinarySearchTree();
+    private ArbolAVL arbolCalificaciones = new ArbolAVL();
     
     /**
      * Método que regresa el singleton del control
@@ -31,6 +31,35 @@ public class ControlEstudiantes {
         }
         return instancia;
     }
+    
+    /**
+     * Agrega una calificación para un estudiante
+     * 
+     * @param calificacion a agregar
+     * @param matricula del estudiante
+     * 
+     * @return el estudiante con calificación agregada
+     */
+    public Estudiante agregarCalificacion(Calificacion calificacion, String matricula) {
+        if (calificacion == null) {
+            throw new ControlException("Calificación vacía");
+        }
+        if (matricula == null || matricula.isBlank()) {
+            throw new ControlException("Matrícula inválida");
+        }
+        
+        //Consulta el estudiante
+        Estudiante estudiante = consultarEstudiante(matricula);
+        if (estudiante == null) {
+            throw new ControlException("No existe el estudiante con esa matrí");
+        }
+        
+        //Configura las calificaciones PENDIENTEEERHUGFEHUGFEJ
+        estudiante.agregarCalificacion(calificacion);
+        arbolCalificaciones.insert(calificacion.getValor());
+        return estudiante;
+    }
+    
     
     /**
      * Determina si el estudiante ya existe o no. Busca concretamente
@@ -83,7 +112,6 @@ public class ControlEstudiantes {
         }
         try {
             validarDatosEstudiante(estudiante);
-            listaRoles.append(estudiante);
             arbolMatriculas.insert(estudiante);
         } catch (Exception e) {
             throw new ControlException(e);
@@ -102,7 +130,6 @@ public class ControlEstudiantes {
             throw new ControlException("No existe el estudiante");
         }
         try {
-            listaRoles.remove(estudiante);
             arbolMatriculas.remove(estudiante);
         } catch (Exception e) {
             throw new ControlException(e);

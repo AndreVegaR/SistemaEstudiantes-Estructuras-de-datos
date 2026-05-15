@@ -1,5 +1,7 @@
 package dominio;
 
+import excepciones.ListException;
+import java.util.Objects;
 import listas.ArrayList;
 
 /**
@@ -19,7 +21,7 @@ public class Estudiante implements Comparable<Estudiante> {
     private String numero;
     private String colonia;
     private String ciudad;
-    //private ArrayList<Calificacion> calificaciones;
+    private ArrayList<Calificacion> calificaciones;
 
     /**
      * Constructor 
@@ -46,10 +48,20 @@ public class Estudiante implements Comparable<Estudiante> {
         this.numero = numero;
         this.colonia = colonia;
         this.ciudad = ciudad;
-        //this.calificaciones = new ArrayList<>(1);
+        this.calificaciones = new ArrayList<>(1);
+    }
+    public Estudiante() {}
+    
+    
+    /** Agrega una calificación al estudiante */
+    public void agregarCalificacion(Calificacion calificacion) {
+        if (calificacion.getValor() < 0) {
+            throw new ListException("La calificación no puede ser menor a 0");
+        }
+        this.calificaciones.append(calificacion);
     }
 
-    public Estudiante() {}
+    
     
     public String getMatricula() {
         return matricula;
@@ -140,4 +152,27 @@ public class Estudiante implements Comparable<Estudiante> {
     public String toString() {
         return "Estudiante{" + "matricula=" + matricula + ", nombres=" + nombres + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", telefono=" + telefono + ", correo=" + correo + ", calle=" + calle + ", numero=" + numero + ", colonia=" + colonia + ", ciudad=" + ciudad + '}';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Estudiante other = (Estudiante) obj;
+        return Objects.equals(this.matricula, other.matricula);
+    }
+    
+    
 }
