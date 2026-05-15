@@ -1,4 +1,4 @@
-package com.mycompany.sistemaestudiantes;
+package InicioAplicacion;
 
 import controles.Control;
 import controles.ControlEstudiantes;
