@@ -203,6 +203,9 @@ public class ArbolAVL<T extends Comparable<T>> {
             nodo.hijoDerecho = insert(nodo.hijoDerecho, clave);
         } else {
             return nodo; // Clave duplicada, no se hace nada
+        }
+        return rebalance(nodo);
+    }
     /**
      * Revisa el factor de equilibrio del nodo y aplica las rotaciones
      * necesarias (Simple o Doble) para mantener el árbol balanceado.
