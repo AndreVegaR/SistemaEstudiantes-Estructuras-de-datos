@@ -21,7 +21,7 @@ public class Estudiante implements Comparable<Estudiante> {
     private String numero;
     private String colonia;
     private String ciudad;
-    private ArrayList<Double> calificaciones;
+    private ArrayList<Calificacion> calificaciones;
 
     /**
      * Constructor 
@@ -53,8 +53,9 @@ public class Estudiante implements Comparable<Estudiante> {
     public Estudiante() {}
     
     
-    public void agregarCalificacion(Double calificacion) {
-        if (calificacion < 0) {
+    /** Agrega una calificación al estudiante */
+    public void agregarCalificacion(Calificacion calificacion) {
+        if (calificacion.getValor() < 0) {
             throw new ListException("La calificación no puede ser menor a 0");
         }
         this.calificaciones.append(calificacion);

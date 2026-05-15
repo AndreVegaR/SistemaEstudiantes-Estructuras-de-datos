@@ -1,10 +1,14 @@
 package utilerias;
+import controles.Control;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.RoundRectangle2D;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -43,6 +47,52 @@ public class UtilBoton {
             g2.dispose();
         }
     }
+    
+
+    private static final Color VERDE_ESCOLAR = new Color(46, 139, 87);
+    private static final Color FONDO_GRIS = new Color(245, 247, 250);
+    private static final Color VERDE_CLARO_HOVER = new Color(230, 245, 235);
+    
+    
+    public static JButton crearBotonPrincipal(String texto) {
+        JButton boton = new JButton(texto) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                if (getModel().isPressed()) {
+                    g2.setColor(new Color(200, 220, 210));
+                } else if (getModel().isRollover()) {
+                    g2.setColor(VERDE_CLARO_HOVER);
+                } else {
+                    g2.setColor(Color.WHITE);
+                }
+                
+                g2.fill(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 30, 30));
+                
+                g2.setColor(VERDE_ESCOLAR);
+                g2.setStroke(new BasicStroke(1.5f));
+                g2.draw(new RoundRectangle2D.Float(1, 1, getWidth() - 2, getHeight() - 2, 30, 30));
+                
+                g2.dispose();
+                super.paintComponent(g);
+            }
+        };
+
+        // Tamaño cuadrado agradable
+        boton.setPreferredSize(new Dimension(140, 130));
+        
+        boton.setContentAreaFilled(false);
+        boton.setBorderPainted(false);
+        boton.setFocusPainted(false);
+        boton.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        boton.setForeground(new Color(40, 60, 50));
+        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        return boton;
+    }
+    
     
     
     /**

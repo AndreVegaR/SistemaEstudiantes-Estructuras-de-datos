@@ -119,7 +119,7 @@ public class UtilSwing {
             funcion.run();
         }
     }
-
+    
     public static void dialogoError(Component pantalla, String mensaje) {
         JOptionPane.showMessageDialog(pantalla, mensaje, "Error", JOptionPane.ERROR_MESSAGE);    
     }

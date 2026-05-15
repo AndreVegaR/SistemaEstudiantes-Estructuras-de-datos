@@ -1,5 +1,6 @@
 package controles;
 
+import dominio.Calificacion;
 import dominio.Curso;
 import dominio.Estudiante;
 
@@ -43,6 +44,7 @@ public class Control {
     public void navegarMenuPrincial() {cp.navegarMenuPrincipal(); }
     
     
+    
     //CONTROL ESTUDIANTES
     /**
      * Busca un estudiante por matrícula
@@ -69,6 +71,19 @@ public class Control {
      * @param estudiante a eliminar
      */
     public void eliminarEstudiante(Estudiante estudiante){ ce.eliminarEstudiante(estudiante); }
+    
+    /**
+     * Agrega una calificación para un estudiante
+     * 
+     * @param calificacion a agregar
+     * @param matricula del estudiante
+     * 
+     * @return el estudiante con calificación agregada
+     */
+    public Estudiante agregarCalificacion(Calificacion calificacion, String matricula) {
+        return ce.agregarCalificacion(calificacion, matricula);
+    }
+    
     
     
     //CONTROL CURSOS

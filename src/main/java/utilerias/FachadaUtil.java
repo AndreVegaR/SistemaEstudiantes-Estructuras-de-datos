@@ -2,10 +2,13 @@ package utilerias;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.List;
+import java.util.function.Function;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
@@ -41,12 +44,6 @@ public class FachadaUtil {
         return UtilGeneral.crearCampoTexto();
     }
     
-    /*
-    public static JPanel crearNavegacion(JFrame frame, ICoordinadorPresentacion coordinador) {
-        return UtilBuild.crearNavegacion(frame, coordinador);
-    }
-    */
-    
     public static void configurarFrame(String titulo, JFrame frame) {
         UtilSwing.configurarFrame(titulo, frame);
     }
@@ -77,5 +74,17 @@ public class FachadaUtil {
     
     public static JButton crearBotonRegresar() {
         return UtilBoton.crearBotonRegresar();
+    }
+    
+    public static JTable crearTabla(String[] columnas) {
+        return UtilGeneral.crearTabla(columnas);
+    }
+    
+    public static <T> void registrarTabla(JTable tabla, List<T> lista, Function<T, Object[]> mapeador) {
+        UtilGeneral.registrarTabla(tabla, lista, mapeador);
+    }
+    
+    public static JButton crearBotonPrincipal(String texto) {
+        return UtilBoton.crearBotonPrincipal(texto);
     }
 }
