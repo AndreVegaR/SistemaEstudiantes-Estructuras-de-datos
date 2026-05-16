@@ -29,6 +29,7 @@ public class CircularLinkedList<T> extends LinkedList<T> {
         if (inicio == null) {
             inicio = nuevo;
             nuevo.setSiguiente(inicio);
+            actual = inicio;
             return;
         }
         
@@ -62,6 +63,7 @@ public class CircularLinkedList<T> extends LinkedList<T> {
             if (inicio == null) {
                 inicio = nuevo;
                 nuevo.setSiguiente(inicio);
+                actual = inicio;
             } else {
 
                 Nodo<T> ultimo = inicio;
@@ -111,10 +113,13 @@ public class CircularLinkedList<T> extends LinkedList<T> {
 
         if (i == 0) {
             eliminado = inicio;
+            if (actual == inicio) {
+                actual = inicio.getSiguiente();
+            }
 
             if (inicio.getSiguiente() == inicio) { 
-
                 inicio = null;
+                actual = null;
             } else {
                 
                 Nodo<T> ultimo = inicio;
@@ -133,12 +138,32 @@ public class CircularLinkedList<T> extends LinkedList<T> {
             for (int j = 0; j < i - 1; j++) {
                 auxiliar = auxiliar.getSiguiente();
             }
-
             eliminado = auxiliar.getSiguiente();
-
+            if (actual == eliminado) {
+                actual = eliminado.getSiguiente();
+            }
             auxiliar.setSiguiente(eliminado.getSiguiente());
         }
 
         return eliminado.getDato();
+    }
+    
+    public T rotar() {
+        if (inicio == null) {
+            throw new ListException("Lista vacía");
+        }
+        if (actual == null) {
+            actual = inicio;
+        }
+        actual = actual.getSiguiente();
+
+        return actual.getDato();
+    }
+    
+    public T actual() {
+        if (actual == null) {
+            throw new ListException("Lista vacía");
+        }
+        return actual.getDato();
     }
 }

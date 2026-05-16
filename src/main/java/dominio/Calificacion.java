@@ -6,24 +6,24 @@ package dominio;
  */
 public class Calificacion {
     
-    int valor;
+    double valor;
     Estudiante estudiante;
     Curso curso;
 
     public Calificacion() {
     }
 
-    public Calificacion(int valor, Estudiante estudiante, Curso curso) {
+    public Calificacion(double valor, Estudiante estudiante, Curso curso) {
         this.valor = valor;
         this.estudiante = estudiante;
         this.curso = curso;
     }
 
-    public int getValor() {
+    public double getValor() {
         return valor;
     }
 
-    public void setValor(int valor) {
+    public void setValor(double valor) {
         this.valor = valor;
     }
 

@@ -14,10 +14,12 @@ import listas.CircularLinkedList;
  * implementaciones de estructuras necesarias
  */
 public class ControlEstudiantes {
+    
     private static ControlEstudiantes instancia;
-    private ControlEstudiantes(){}
-    private BinarySearchTree<Estudiante> arbolMatriculas = new BinarySearchTree();
-    private ArbolAVL arbolCalificaciones = new ArbolAVL();
+    private ControlEstudiantes(){
+        arbolMatriculas = new BinarySearchTree();
+    }
+    private BinarySearchTree<Estudiante> arbolMatriculas;
     
     /**
      * Método que regresa el singleton del control
@@ -31,35 +33,6 @@ public class ControlEstudiantes {
         }
         return instancia;
     }
-    
-    /**
-     * Agrega una calificación para un estudiante
-     * 
-     * @param calificacion a agregar
-     * @param matricula del estudiante
-     * 
-     * @return el estudiante con calificación agregada
-     */
-    public Estudiante agregarCalificacion(Calificacion calificacion, String matricula) {
-        if (calificacion == null) {
-            throw new ControlException("Calificación vacía");
-        }
-        if (matricula == null || matricula.isBlank()) {
-            throw new ControlException("Matrícula inválida");
-        }
-        
-        //Consulta el estudiante
-        Estudiante estudiante = consultarEstudiante(matricula);
-        if (estudiante == null) {
-            throw new ControlException("No existe el estudiante con esa matrí");
-        }
-        
-        //Configura las calificaciones PENDIENTEEERHUGFEHUGFEJ
-        estudiante.agregarCalificacion(calificacion);
-        arbolCalificaciones.insert(calificacion.getValor());
-        return estudiante;
-    }
-    
     
     /**
      * Determina si el estudiante ya existe o no. Busca concretamente
@@ -97,7 +70,6 @@ public class ControlEstudiantes {
         }
         return encontrado;
     }
-    
     /**
      * Agrega un estudiante al sistema. Internamente, lo almacena
      * en las estructuras necesarias para todas las necesidades
@@ -117,7 +89,6 @@ public class ControlEstudiantes {
             throw new ControlException(e);
         } 
     }
-    
     /**
      * Elimina un estudiante del sistema removiéndolo de todas
      * las estructuras que lo contengan
@@ -135,7 +106,6 @@ public class ControlEstudiantes {
             throw new ControlException(e);
         } 
     }
-    
     /**
      * Auxiliar que valida si el estudiante está vacío
      * 
@@ -146,7 +116,6 @@ public class ControlEstudiantes {
             throw new ControlException("Estudiante vacío");
         }
     }
-    
     /**
      * Valida reflexivamente los campos de un objeto
      * 

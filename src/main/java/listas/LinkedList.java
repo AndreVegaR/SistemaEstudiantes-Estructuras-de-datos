@@ -44,7 +44,7 @@ public class LinkedList<T> implements IList<T> {
     
     //Atributos
     protected Nodo<T> inicio = null;
-    
+    protected Nodo<T> actual;
     
     
     /**

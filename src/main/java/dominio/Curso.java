@@ -3,6 +3,7 @@ package dominio;
 import excepciones.ListException;
 import java.util.Objects;
 import listas.CircularLinkedList;
+import listas.DoubleCircularLinkedList;
 import listas.LinkedList;
 
 /**
@@ -15,13 +16,17 @@ public class Curso {
     private int capacidad;
     private LinkedList<Estudiante> estudiantes;
     private CircularLinkedList<Estudiante> listaRoles;
-
+    private DoubleCircularLinkedList<Estudiante> listaEspera;
+    
     public Curso(String clave, String nombre, int capacidad) {
         this.clave = clave;
         this.nombre = nombre;
         this.capacidad = capacidad;
         this.estudiantes = new LinkedList();
         this.listaRoles = new CircularLinkedList();
+        estudiantes = new LinkedList<>();
+        listaRoles = new CircularLinkedList<>();
+        listaEspera = new DoubleCircularLinkedList<>();
     }
     
     /**
@@ -30,19 +35,34 @@ public class Curso {
      * @param estudiante a agregar
      */
     public void agregarEstudiante(Estudiante estudiante) {
-        if (estudiantes.size() >= capacidad) {
-            throw new ListException("Capacidad máxima alcanzada para este curso");
-        }
-        if (estudiante == null) {
-            throw new ListException("Estudiante vacío");
-        }
-        if (estudiantes.indexOf(estudiante) != -1) {
-            throw new ListException("El estudiante ya existe en el curso");
-        }
         estudiantes.append(estudiante);
         listaRoles.append(estudiante);
     }
+    /**
+     * Método que maneja la eliminación de estudiantes
+     * @param estudiante el estudiante a eliminar
+     */
+     public void eliminarEstudiante(Estudiante estudiante) {
+        estudiantes.remove(estudiante);
+        listaRoles.remove(estudiante);
+    }
 
+    public CircularLinkedList<Estudiante> getListaRoles() {
+        return listaRoles;
+    }
+
+    public void setListaRoles(CircularLinkedList<Estudiante> listaRoles) {
+        this.listaRoles = listaRoles;
+    }
+
+    public DoubleCircularLinkedList<Estudiante> getListaEspera() {
+        return listaEspera;
+    }
+
+    public void setListaEspera(DoubleCircularLinkedList<Estudiante> listaEspera) {
+        this.listaEspera = listaEspera;
+    }
+     
     @Override
     public String toString() {
         return nombre + " [ " + clave + "]: " + estudiantes.size() + " de " + capacidad;

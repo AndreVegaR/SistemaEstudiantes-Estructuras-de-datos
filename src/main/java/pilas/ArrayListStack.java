@@ -53,7 +53,7 @@ public class ArrayListStack<T> extends ArrayList<T> implements IStack<T> {
             throw new StackException(VACIA);
         }
     }
-
+    
     /**
      * peek
      * Maneja el método get dentro de un try-catch

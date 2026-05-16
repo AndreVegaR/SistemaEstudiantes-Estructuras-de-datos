@@ -60,6 +60,20 @@ public class Estudiante implements Comparable<Estudiante> {
         }
         this.calificaciones.append(calificacion);
     }
+    /**
+     * Elimina una calificación del estudiante
+     * @param indice 
+     */
+    public void eliminarCalificacion(int indice) {
+        calificaciones.removeExtraer(indice);
+    }
+    public ArrayList<Calificacion> getCalificaciones() {
+        return calificaciones;
+    }
+
+    public void setCalificaciones(ArrayList<Calificacion> calificaciones) {
+        this.calificaciones = calificaciones;
+    }
 
     
     
