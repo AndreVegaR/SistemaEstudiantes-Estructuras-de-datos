@@ -61,4 +61,12 @@ public class LinkedListQueue<T> extends LinkedList<T> implements IQueue<T> {
             throw new QueueException(VACIA);
         }
     }
+    
+    public boolean isEmpty(){
+        try{
+            return size() == 0;
+        }catch(ListException e){
+            return true;
+        }
+    }
 }

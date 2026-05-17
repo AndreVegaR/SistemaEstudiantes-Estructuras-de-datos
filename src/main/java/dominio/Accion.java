@@ -23,6 +23,7 @@ public class Accion {
         ROTAR_ROL
         
     }
+    
     //Se supone que con estas referencias ya se pueden deshacer todas las acciones
     private final TipoAccion tipo;
 

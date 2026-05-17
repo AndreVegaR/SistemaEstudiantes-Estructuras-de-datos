@@ -34,4 +34,7 @@ public interface IStack<T> {
      * @throws StackException 
      */
     public T peek() throws StackException;
+
+    public boolean isEmpty();
+    
 }

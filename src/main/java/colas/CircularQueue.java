@@ -140,4 +140,10 @@ public class CircularQueue<T> extends ArrayList<T> implements IQueue<T> {
             throw new QueueException(VACIA);
         }
     }
+
+    @Override
+    public boolean isEmpty() {
+        return size() ==0;
+    }
+    
 }

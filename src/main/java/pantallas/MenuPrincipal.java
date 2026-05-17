@@ -66,7 +66,7 @@ public class MenuPrincipal extends JFrame {
         
         //Crea el botón de calificaciones
         JButton botonCalificaciones = FachadaUtil.crearBotonPrincipal("Calificaciones");
-        botonCalificaciones.addActionListener(e -> System.out.println(""));
+        botonCalificaciones.addActionListener(e -> control.navegarPantallaCalificaciones());
         gbc.gridx = 3; gbc.gridy = 0;
         panelBotones.add(botonCalificaciones, gbc);
         

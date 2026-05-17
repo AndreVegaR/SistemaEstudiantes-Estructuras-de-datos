@@ -11,6 +11,7 @@ import listas.LinkedList;
  * @author Andre
  */
 public class Curso {
+    
     private String clave;
     private String nombre;
     private int capacidad;

@@ -69,4 +69,8 @@ public class ArrayListStack<T> extends ArrayList<T> implements IStack<T> {
             throw new StackException(VACIA);
         }
     }
+    @Override
+    public boolean isEmpty() {
+        return size() ==0;
+    }
 }

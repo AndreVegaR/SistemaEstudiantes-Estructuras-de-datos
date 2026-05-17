@@ -64,4 +64,9 @@ public class LinkedListStack<T> extends LinkedList<T> implements IStack<T> {
             throw new StackException(VACIA);
         }
     }
+    
+    @Override
+    public boolean isEmpty() {
+        return size() ==0;
+    }
 }

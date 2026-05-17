@@ -32,4 +32,8 @@ public interface IQueue<T> {
      * @throws QueueException 
      */
     public T peek() throws QueueException;
+
+    public boolean isEmpty();
+
+    public int size();
 }

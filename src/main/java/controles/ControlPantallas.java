@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import pantallas.MenuPrincipal;
 import pantallas.PantallaCursos;
 import pantallas.PantallaEstudiantes;
-
+import pantallas.PantallaCalificaciones;
 /**
  * Control encargado del flujo de navegación del
  * sistema, abriendo y cerrando frames y diálogos
@@ -51,7 +51,9 @@ public class ControlPantallas {
         navegar(PantallaEstudiantes::new);
     }
     
-    
+    public void navegarPantallaCalificaciones(){
+        navegar(PantallaCalificaciones::new);
+    }
     
     /**
      * Método privado que centraliza la navegación

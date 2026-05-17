@@ -4,8 +4,6 @@ import dominio.Accion;
 import dominio.Calificacion;
 import dominio.Curso;
 import dominio.Estudiante;
-import excepciones.ControlException;
-import java.util.List;
 import listas.ArrayList;
 import listas.DoubleLinkedList;
 import pilas.IStack;
@@ -25,6 +23,7 @@ public class Control {
     private final ControlEstudiantes ce;
     private final ControlCursos cc;
     private final ControlInscripciones ci;
+    private final ControlCalificaciones ccal;
 
     /**
      * Constructor privado singleton
@@ -35,6 +34,7 @@ public class Control {
         this.cc = ControlCursos.singleton();
         this.ci = ControlInscripciones.singleton();
         this.pilaAcciones = new LinkedListStack<>();
+        this.ccal = ControlCalificaciones.singleton();
     }
     /**
      * Singleton del control principal
@@ -67,6 +67,9 @@ public class Control {
         cp.navegarPantallaEstudiantes();
     }
     
+    public void navegarPantallaCalificaciones(){
+        cp.navegarPantallaCalificaciones();
+    }
     /**
      * Consulta todos los estudiantes
      * 

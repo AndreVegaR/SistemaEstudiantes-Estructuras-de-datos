@@ -4,21 +4,27 @@
  */
 package arboles;
 
+import listas.ArrayList;
+
 /**
  * Esta clase representa un árbol avl el cual se balancea automáticamente al sufrir algún cambio
  * en su estructura.
  * El parámetro genérico de la clase main utiliza comparable para poder realizar comparaciones
  * e identificar si la clave de un nodo es mayor, menor o igual.
+ * 
  * @author aaron
+ * @author william
+ * @author andre
  */
-public class ArbolAVL<T extends Comparable<T>> {
+public class ArbolAVL<K extends Comparable<K>, V> {
     
     /**
      * Clase nodo que se encarga de la recursividad 
      */
-    private class Nodo{
+    private class Nodo {
 
-        private T clave;
+        private K clave;
+        private V valor;
         private Nodo hijoIzquierdo;
         private Nodo hijoDerecho;
         
@@ -26,14 +32,19 @@ public class ArbolAVL<T extends Comparable<T>> {
          * Constructor del Nodo
          * @param clave 
          */
-        public Nodo(T clave) {
+        public Nodo(K clave, V valor) {
             this.clave = clave;
+            this.valor = valor;
             this.hijoIzquierdo = null;
             this.hijoDerecho = null;
         }
 
-        public T getClave() {
+        public K getClave() {
             return clave;
+        }
+
+        public V getValor() {
+            return valor;
         }
 
         public Nodo getHijoIzquierdo() {
@@ -76,10 +87,26 @@ public class ArbolAVL<T extends Comparable<T>> {
      *
      * @param dato El valor entero que se desea eliminar.
      */
-    public void remove(T dato) {
-        raiz = remove(raiz, dato);
+    public void remove(K clave) {
+        raiz = remove(raiz, clave);
     }
 
+    public void insert(K clave, V valor) {
+        raiz = insert(raiz, clave, valor);
+    }
+
+    public void inOrder() {
+        inOrder(raiz);
+    }
+    
+    private void inOrder(Nodo nodo) {
+        if (nodo != null) {
+            inOrder(nodo.hijoIzquierdo);
+            System.out.println(nodo.clave + " - " + nodo.valor);
+            inOrder(nodo.hijoDerecho);
+        }
+    }
+    
     /**
      * Método recursivo para eliminar un nodo y aplicar balanceo AVL.
      *
@@ -87,7 +114,7 @@ public class ArbolAVL<T extends Comparable<T>> {
      * @param dato Valor a eliminar.
      * @return El nodo (o su reemplazo) ya balanceado.
      */
-    private Nodo remove(Nodo nodo, T clave) {
+    private Nodo remove(Nodo nodo, K clave) {
         // CASO BASE: Si el dato no existe en el árbol
         if (nodo == null) {
             return null;
@@ -116,6 +143,7 @@ public class ArbolAVL<T extends Comparable<T>> {
 
             // se reemplaza el nodo actual con el que se encuentra
             nodo.clave = reemplazo.clave;
+            nodo.valor = reemplazo.valor;
 
             // Eliminamos el nodo que usamos como reemplazo (su copia original)
             nodo.hijoIzquierdo = remove(nodo.hijoIzquierdo, reemplazo.clave);
@@ -185,27 +213,22 @@ public class ArbolAVL<T extends Comparable<T>> {
         return getHeight(nodo.hijoDerecho) - getHeight(nodo.hijoIzquierdo);
     }
 
-    public void insert(T clave) {
-        raiz = insert(raiz, clave);
-    }
-
-    private Nodo insert(Nodo nodo, T clave) {
+    private Nodo insert(Nodo nodo, K clave, V valor) {
         if (nodo == null) {
-            return new Nodo(clave);
+            return new Nodo(clave, valor);
         }
 
         // --- Comparar la clave con otro ---
         int resultado = clave.compareTo(nodo.clave);
         
         if (resultado < COMPARACION_COMPARE) {
-            nodo.hijoIzquierdo = insert(nodo.hijoIzquierdo, clave);
-        } else if (resultado > COMPARACION_COMPARE) {
-            nodo.hijoDerecho = insert(nodo.hijoDerecho, clave);
+            nodo.hijoIzquierdo = insert(nodo.hijoIzquierdo, clave, valor);
         } else {
-            return nodo; // Clave duplicada, no se hace nada
+            nodo.hijoDerecho = insert(nodo.hijoDerecho, clave, valor);
         }
         return rebalance(nodo);
     }
+    
     /**
      * Revisa el factor de equilibrio del nodo y aplica las rotaciones
      * necesarias (Simple o Doble) para mantener el árbol balanceado.
@@ -260,5 +283,20 @@ public class ArbolAVL<T extends Comparable<T>> {
 
         // Si ya no hay hijo derecho, este es el más grande
         return nodo;
+    }
+    public boolean estaVacio() {
+        return raiz == null;
+    }
+    
+    public void inOrderToList(ArrayList<V> lista) {
+        inOrderToList(raiz, lista);
+    }
+
+    private void inOrderToList(Nodo nodo, ArrayList<V> lista) {
+        if (nodo != null) {
+            inOrderToList(nodo.hijoIzquierdo, lista);
+            lista.append(nodo.getValor());
+            inOrderToList(nodo.hijoDerecho, lista);
+        }
     }
 }

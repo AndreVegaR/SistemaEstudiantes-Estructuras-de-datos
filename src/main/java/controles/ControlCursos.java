@@ -6,6 +6,7 @@ import excepciones.ControlException;
 import java.util.List;
 import listas.DoubleLinkedList;
 import listas.LinkedList;
+import diccionario.Diccionario;
 
 /**
  *
@@ -14,10 +15,10 @@ import listas.LinkedList;
 public class ControlCursos {
     private static ControlCursos instancia;
     
-    private static DoubleLinkedList<Curso> cursos;
+    private Diccionario<String, Curso> catalogoCursos;
     
     private ControlCursos() {
-        cursos = new DoubleLinkedList<>();
+        catalogoCursos = new Diccionario<>(20);
     }
     /**
      * Método que regresa el singleton del control
@@ -34,7 +35,12 @@ public class ControlCursos {
     
     
     public DoubleLinkedList<Curso> obtenerCursos() {
-        return cursos;
+        DoubleLinkedList<Curso> listaCursos = new DoubleLinkedList<>();
+        List<Curso> cursos = catalogoCursos.obtenerValores();
+        for (Curso curso : cursos) {
+            listaCursos.append(curso);
+        }
+        return listaCursos;
     }
     
     
@@ -59,10 +65,10 @@ public class ControlCursos {
             throw new ControlException("Capacidad inválida");
         }
 
-        if (cursos.indexOf(curso) != -1) {
+        if (catalogoCursos.recuperar(curso.getClave()) != null) {
             throw new ControlException("El curso ya existe");
         }
-        cursos.append(curso);
+        catalogoCursos.agregar(curso.getClave(), curso);
     }
     /**
      * Método que elimina un curso
@@ -72,10 +78,10 @@ public class ControlCursos {
         if (curso == null) {
             throw new ControlException("Curso vacío");
         }
-        if (cursos.indexOf(curso) == -1) {
+        if (catalogoCursos.recuperar(curso.getClave()) == null) {
             throw new ControlException("El curso no existe");
         }
-        cursos.remove(curso);
+        catalogoCursos.eliminar(curso.getClave());
         
         //Elimina el curso de todos los estudiantes inscritos
         LinkedList<Estudiante> estudiantes = curso.getEstudiantes();
@@ -92,19 +98,18 @@ public class ControlCursos {
         if (clave == null || clave.isBlank()) {
             throw new ControlException("Clave vacía");
         }
-        for (int i = 0; i < cursos.size(); i++) {
-            Curso curso = cursos.get(i);
-            if (curso.getClave().equals(clave)) {
-                return curso;
-            }
-        }
-        return null;
+        return catalogoCursos.recuperar(clave);
     }
     /**
      * Método que devuelve todos los cursos para mostrarlos en alguna pantalla
      * @return una lista doblemente enlazada de cursos
      */
     public DoubleLinkedList<Curso> listarCursos() {
-       return cursos;
+        DoubleLinkedList<Curso> listaCursos = new DoubleLinkedList<>();
+        List<Curso> cursos = catalogoCursos.obtenerValores();
+        for (Curso curso : cursos) {
+            listaCursos.append(curso);
+        }
+        return listaCursos;
     }
 }
