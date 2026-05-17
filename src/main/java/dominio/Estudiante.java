@@ -61,11 +61,18 @@ public class Estudiante implements Comparable<Estudiante> {
         this.calificaciones.append(calificacion);
     }
     /**
-     * Elimina una calificación del estudiante
-     * @param indice 
+     * Elimina una calificación del estudiante basándose
+     * por la calificación
+     * 
+     * @param curso
      */
-    public void eliminarCalificacion(int indice) {
-        calificaciones.removeExtraer(indice);
+    public void eliminarCalificacion(Curso curso) {
+        for (int i = 0; i < calificaciones.size(); i++) {
+            Calificacion c = calificaciones.get(i);
+            if (c.getCurso().equals(curso)) {
+                calificaciones.remove(c);
+            }
+        }
     }
     public ArrayList<Calificacion> getCalificaciones() {
         return calificaciones;
@@ -76,6 +83,13 @@ public class Estudiante implements Comparable<Estudiante> {
     }
 
     
+    public String nombreCompleto() {
+        return nombres + " " + apellidoPaterno + " " + apellidoMaterno; 
+    }
+    
+    public String direccionCompleta() {
+        return calle + " (" + numero + ") " + colonia + ", " + ciudad;
+    }
     
     public String getMatricula() {
         return matricula;
@@ -166,11 +180,35 @@ public class Estudiante implements Comparable<Estudiante> {
     public String toString() {
         return "Estudiante{" + "matricula=" + matricula + ", nombres=" + nombres + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", telefono=" + telefono + ", correo=" + correo + ", calle=" + calle + ", numero=" + numero + ", colonia=" + colonia + ", ciudad=" + ciudad + '}';
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 7;
         return hash;
+    }
+    
+    /**
+     * Calcula el promedio del estudiante
+     * 
+     * @return 
+     */
+    public int promediar() {
+        if (calificaciones.empty()) {
+            return 0;
+        }
+        int sumaTotal = sumarRecursivo(0);
+        return sumaTotal / calificaciones.size();
+    }
+    
+    private int sumarRecursivo(int indice) {
+        //Si llega al tamaño de la lista, ya no hay más qué sumar
+        if (indice == calificaciones.size()) {
+            return 0;
+        }
+
+        //Suma el valor actual más el de la llamada
+        Calificacion c = calificaciones.get(indice);
+        return c.getValor() + sumarRecursivo(indice + 1);
     }
 
     @Override

@@ -3,6 +3,8 @@ package controles;
 import java.util.function.Supplier;
 import javax.swing.JFrame;
 import pantallas.MenuPrincipal;
+import pantallas.PantallaCursos;
+import pantallas.PantallaEstudiantes;
 
 /**
  * Control encargado del flujo de navegación del
@@ -38,6 +40,18 @@ public class ControlPantallas {
     public void navegarMenuPrincipal() {
         navegar(MenuPrincipal::new);
     }
+    
+    /** Navega al menú donde se administran los cursos */
+    public void navegarPantallaCursos() {
+        navegar(PantallaCursos::new);
+    }
+    
+    /** Navega al menú donde se administran los estudiantes */
+    public void navegarPantallaEstudiantes() {
+        navegar(PantallaEstudiantes::new);
+    }
+    
+    
     
     /**
      * Método privado que centraliza la navegación

@@ -12,6 +12,8 @@ public class Constantes {
     /** Etiquetita dentro de los títutlos de las pantallas */
     public static final String ETIQUETA_NEGOCIO = "Sistema estudiantes - ";
     
+    public static final Color VERDE_ESCOLAR = new Color(46, 139, 87);
+    
     /** Arreglo que ya define los campos de la barra superior de navegación */
     public static final String[] CAMPOS_PANEL_SUPERIOR = {
     "Inicio", "Iniciar venta", "Iniciar solicitud", "Historial de ventas", "Historial de solicitudes"};
@@ -40,10 +42,12 @@ public class Constantes {
     
     
     /** Azul (37, 99, 235) */
-    public static final Color COLOR_BOTONES = new Color(37, 99, 235);
+    public static final Color COLOR_BOTONES = VERDE_ESCOLAR;
+    
+    public static final Color AZULITO = new Color(37, 99, 235);
     
     /** Azul oscuro 29, 78, 216 */
-    public static final Color COLOR_BOTON_HOVER = new Color(29, 78, 216);
+    public static final Color COLOR_BOTON_HOVER = COLOR_BOTONES.darker();
     
     /** Blanco */
     public static final Color COLOR_TEXTO_BOTONES = Color.WHITE;
@@ -65,5 +69,5 @@ public class Constantes {
     public static final Color COLOR_ELEGIR_FILA = new Color(210, 214, 218);
     
     /** Azul (37, 99, 235) | PUEDA QUE SE VAYA ESTA CONSTANTE */
-    public static final Color COLOR_TABLA = COLOR_BOTONES;
+    public static final Color COLOR_TABLA = VERDE_ESCOLAR;
 }

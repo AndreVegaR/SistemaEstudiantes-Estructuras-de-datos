@@ -3,9 +3,11 @@ package controles;
 import arboles.ArbolAVL;
 import arboles.BinarySearchTree;
 import dominio.Calificacion;
+import dominio.Curso;
 import dominio.Estudiante;
 import excepciones.ControlException;
 import java.lang.reflect.Field;
+import listas.ArrayList;
 import listas.CircularLinkedList;
 
 /**
@@ -14,12 +16,13 @@ import listas.CircularLinkedList;
  * implementaciones de estructuras necesarias
  */
 public class ControlEstudiantes {
+    private BinarySearchTree<Estudiante> arbolMatriculas;
     
     private static ControlEstudiantes instancia;
     private ControlEstudiantes(){
         arbolMatriculas = new BinarySearchTree();
     }
-    private BinarySearchTree<Estudiante> arbolMatriculas;
+    
     
     /**
      * Método que regresa el singleton del control
@@ -32,6 +35,15 @@ public class ControlEstudiantes {
             instancia = new ControlEstudiantes();
         }
         return instancia;
+    }
+    
+    /**
+     * Obtiene todos los estudiantes del sistema
+     * 
+     * @return 
+     */
+    public ArrayList<Estudiante> obtenerEstudiantes() {
+        return arbolMatriculas.toList();
     }
     
     /**
@@ -70,6 +82,7 @@ public class ControlEstudiantes {
         }
         return encontrado;
     }
+    
     /**
      * Agrega un estudiante al sistema. Internamente, lo almacena
      * en las estructuras necesarias para todas las necesidades
@@ -79,16 +92,23 @@ public class ControlEstudiantes {
      */
     public void agregarEstudiante(Estudiante estudiante) {
         estudianteVacio(estudiante);
-        if (existeEstudiante(estudiante)) {
-            throw new ControlException("Ya existe el estudiante");
-        }
         try {
             validarDatosEstudiante(estudiante);
+        } catch (IllegalAccessException e) {
+            throw new ControlException("Error de permisos al validar atributos: " + e.getMessage());
+        }
+        
+        if (existeEstudiante(estudiante)) {
+            throw new ControlException("Ya existe un estudiante registrado con esta matrícula");
+        }
+        
+        try {
             arbolMatriculas.insert(estudiante);
         } catch (Exception e) {
-            throw new ControlException(e);
-        } 
+            throw new ControlException("Error al insertar en el árbol: " + e.getMessage());
+        }
     }
+    
     /**
      * Elimina un estudiante del sistema removiéndolo de todas
      * las estructuras que lo contengan
@@ -106,6 +126,17 @@ public class ControlEstudiantes {
             throw new ControlException(e);
         } 
     }
+    
+    public void eliminarCalificacion(Estudiante estudiante, Curso curso) {
+        if (curso == null || estudiante == null) {
+            throw new ControlException("Datos inválidos");
+        }
+        if (!existeEstudiante(estudiante)) {
+            throw new ControlException("No existe el estudiante");
+        }
+        estudiante.eliminarCalificacion(curso);
+    }
+    
     /**
      * Auxiliar que valida si el estudiante está vacío
      * 
@@ -116,6 +147,7 @@ public class ControlEstudiantes {
             throw new ControlException("Estudiante vacío");
         }
     }
+    
     /**
      * Valida reflexivamente los campos de un objeto
      * 

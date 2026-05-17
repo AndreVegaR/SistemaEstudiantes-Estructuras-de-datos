@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import utilerias.Constantes;
 import utilerias.FachadaUtil;
 
 /**
@@ -13,7 +14,7 @@ import utilerias.FachadaUtil;
  */
 public class MenuPrincipal extends JFrame {
     private static final Control control = Control.singleton();
-    private final Color VERDE_ESCOLAR = new Color(46, 139, 87);
+    private final Color VERDE_ESCOLAR = Constantes.VERDE_ESCOLAR;
     private final Color FONDO_GRIS = new Color(245, 247, 250);
     private static final Color VERDE_CLARO_HOVER = new Color(230, 245, 235);
     
@@ -47,37 +48,37 @@ public class MenuPrincipal extends JFrame {
         
         //Crea el botón de estudiantes
         JButton botonEstudiantes = FachadaUtil.crearBotonPrincipal("Estudiantes");
-        botonEstudiantes.addActionListener(e -> System.out.println(""));
+        botonEstudiantes.addActionListener(e -> control.navegarPantallaEstudiantes());
         gbc.gridx = 0; gbc.gridy = 0;
         panelBotones.add(botonEstudiantes, gbc);
         
         //Crea el botón de cursos
         JButton botonCursos = FachadaUtil.crearBotonPrincipal("Cursos");
-        botonEstudiantes.addActionListener(e -> System.out.println(""));
+        botonCursos.addActionListener(e -> control.navegarPantallaCursos());
         gbc.gridx = 1; gbc.gridy = 0;
         panelBotones.add(botonCursos, gbc);
         
         //Crea el botón de inscripciones
         JButton botonInscripciones = FachadaUtil.crearBotonPrincipal("Inscripciones");
-        botonEstudiantes.addActionListener(e -> System.out.println(""));
+        botonInscripciones.addActionListener(e -> System.out.println(""));
         gbc.gridx = 2; gbc.gridy = 0;
         panelBotones.add(botonInscripciones, gbc);
         
         //Crea el botón de calificaciones
         JButton botonCalificaciones = FachadaUtil.crearBotonPrincipal("Calificaciones");
-        botonEstudiantes.addActionListener(e -> System.out.println(""));
+        botonCalificaciones.addActionListener(e -> System.out.println(""));
         gbc.gridx = 3; gbc.gridy = 0;
         panelBotones.add(botonCalificaciones, gbc);
         
         //Crea el botón de acciones
         JButton botonAcciones = FachadaUtil.crearBotonPrincipal("Revertir cambio");
-        botonEstudiantes.addActionListener(e -> System.out.println(""));
+        botonAcciones.addActionListener(e -> System.out.println(""));
         gbc.gridx = 4; gbc.gridy = 0;
         panelBotones.add(botonAcciones, gbc);
         
         //Crea el botón de reportes
         JButton botonReportes = FachadaUtil.crearBotonPrincipal("Reportes");
-        botonEstudiantes.addActionListener(e -> System.out.println(""));
+        botonReportes.addActionListener(e -> System.out.println(""));
         gbc.gridx = 5; gbc.gridy = 0;
         panelBotones.add(botonReportes, gbc);
         

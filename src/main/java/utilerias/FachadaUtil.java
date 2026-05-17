@@ -80,10 +80,6 @@ public class FachadaUtil {
         return UtilGeneral.crearTabla(columnas);
     }
     
-    public static <T> void registrarTabla(JTable tabla, List<T> lista, Function<T, Object[]> mapeador) {
-        UtilGeneral.registrarTabla(tabla, lista, mapeador);
-    }
-    
     public static JButton crearBotonPrincipal(String texto) {
         return UtilBoton.crearBotonPrincipal(texto);
     }

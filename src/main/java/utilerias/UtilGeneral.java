@@ -2,7 +2,6 @@ package utilerias;
 import java.awt.Color;
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.util.function.Function;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -151,28 +150,6 @@ public class UtilGeneral {
      */
     public static CampoTextoRedondeado crearCampoTexto() {
         return new CampoTextoRedondeado(Constantes.NUM_CARACTERES);
-    }
-    
-    
-    /**
-     * Método que añade un registro a la tabla 
-     * Utiliza el último guardado por el coordinador
-     *
-     * @param <T> puede ser cualquier DTO
-     * @param tabla
-     * @param lista
-     * @param mapeador el método lambda para que sea flexible con cualquier clase
-     */
-    public static <T> void registrarTabla(JTable tabla, List<T> lista, Function<T, Object[]> mapeador) {
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-
-        //Si la lista tiene más de un elemento, entonces es para cargar toda la tabla con registros ya existentes
-        modelo.setRowCount(0);
-        if (lista != null) {
-            for (T elemento: lista) {
-                modelo.addRow(mapeador.apply(elemento));
-            }
-        }
     }
     
     /**

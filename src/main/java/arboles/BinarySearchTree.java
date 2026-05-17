@@ -2,6 +2,7 @@ package arboles;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import listas.ArrayList;
 import listas.LinkedListStack;
 
 /**
@@ -132,7 +133,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTreeComun<T
     * nodo del parametro.
     */
     protected NodoArbolBinario<T> findSmallestNode(NodoArbolBinario<T> nodo) {
-        return nodo.getHijoIzq() == null? nodo:findSmallestNode(nodo.getHijoDer());
+        return nodo.getHijoIzq() == null? nodo:findSmallestNode(nodo.getHijoIzq());
     }
     
    /**
@@ -154,6 +155,19 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTreeComun<T
         return s;
     }
     
+    /**
+    * Devuelve una lista con todos los elementos del árbol ordenados en orden
+    * @return Una lista de tipo List<T> con los elementos del árbol
+    */
+   public ArrayList<T> toList() {
+        ArrayList<T> lista = new ArrayList<>(1);
+        Iterator<T> iter = getInorderIterator();
+        while (iter.hasNext()) {
+            lista.append(iter.next());
+        }
+        return lista;
+   }
+
     
     
     

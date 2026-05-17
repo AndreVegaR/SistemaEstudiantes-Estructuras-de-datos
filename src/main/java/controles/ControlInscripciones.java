@@ -97,6 +97,7 @@ public class ControlInscripciones {
         }
         try {
             curso.eliminarEstudiante(estudiante);
+            estudiante.eliminarCalificacion(curso);
             if (!curso.getListaEspera().empty()) {
                 Estudiante siguiente =curso.getListaEspera().removeExtraer(0);
                 curso.agregarEstudiante(siguiente);

@@ -1,8 +1,11 @@
 package controles;
 
 import dominio.Curso;
+import dominio.Estudiante;
 import excepciones.ControlException;
+import java.util.List;
 import listas.DoubleLinkedList;
+import listas.LinkedList;
 
 /**
  *
@@ -29,6 +32,12 @@ public class ControlCursos {
         return instancia;
     }
     
+    
+    public DoubleLinkedList<Curso> obtenerCursos() {
+        return cursos;
+    }
+    
+    
     /**
      * Agrega el curso al sistema
      * 
@@ -45,6 +54,10 @@ public class ControlCursos {
         if (curso.getNombre() == null || curso.getNombre().isBlank()) {
             throw new ControlException("Nombre vacío");
         }
+        
+        if (curso.getCapacidad() == 0) {
+            throw new ControlException("Capacidad inválida");
+        }
 
         if (cursos.indexOf(curso) != -1) {
             throw new ControlException("El curso ya existe");
@@ -60,10 +73,15 @@ public class ControlCursos {
             throw new ControlException("Curso vacío");
         }
         if (cursos.indexOf(curso) == -1) {
-            throw new ControlException("El curso no existe"
-            );
+            throw new ControlException("El curso no existe");
         }
         cursos.remove(curso);
+        
+        //Elimina el curso de todos los estudiantes inscritos
+        LinkedList<Estudiante> estudiantes = curso.getEstudiantes();
+        for (int i = 0; i < estudiantes.size(); i++) {
+            estudiantes.get(i).eliminarCalificacion(curso);
+        }
     }
     /**
      * Método que obtiene un curso

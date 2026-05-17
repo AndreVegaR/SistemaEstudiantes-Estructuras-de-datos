@@ -5,6 +5,9 @@ import dominio.Calificacion;
 import dominio.Curso;
 import dominio.Estudiante;
 import excepciones.ControlException;
+import java.util.List;
+import listas.ArrayList;
+import listas.DoubleLinkedList;
 import pilas.IStack;
 import pilas.LinkedListStack;
 
@@ -53,6 +56,26 @@ public class Control {
     public void navegarMenuPrincial() {
         cp.navegarMenuPrincipal();
     }
+    
+    /** Navega al menú donde se administran los cursos */
+    public void navegarPantallaCursos() {
+        cp.navegarPantallaCursos();
+    }
+    
+    /** Navega al menú donde se administran los estudiantes */
+    public void navegarPantallaEstudiantes() {
+        cp.navegarPantallaEstudiantes();
+    }
+    
+    /**
+     * Consulta todos los estudiantes
+     * 
+     * @return estudiantes
+     */
+    public ArrayList<Estudiante> consultarEstudiantes() {
+        return ce.obtenerEstudiantes();
+    }
+    
     /**
      * Consulta a un estudiante por su matrícula
      * @param matricula la matrícula del estudiante
@@ -96,6 +119,9 @@ public class Control {
     //    return estudiante;
     //}
 
+    
+    
+    
     /**
      * Agrega curso
      *
@@ -113,6 +139,7 @@ public class Control {
     public void eliminarCurso(Curso curso) {
         pilaAcciones.push(Accion.eliminarCurso(curso));
         cc.eliminarCurso(curso);
+        
     }
 
     /**
@@ -125,6 +152,11 @@ public class Control {
         return cc.consultarCurso(clave);
     }
 
+    
+    public DoubleLinkedList<Curso> obtenerCursos() {
+        return cc.obtenerCursos();
+    }
+    
     /**
      * Inscribe estudiante en curso
      *
