@@ -13,6 +13,7 @@ import excepciones.QueueException;
 import pilas.IStack;
 import pilas.LinkedListStack;
 import dominio.Accion;
+import listas.ArrayList;
 
 public class ControlCalificaciones {
     private static ControlCalificaciones instancia;
@@ -142,5 +143,30 @@ public class ControlCalificaciones {
         } catch (Exception e) {
             return 0;
         }
+    }
+    
+    public ArrayList<SolicitudCalificacion> obtenerSolicitudesPendientes() {
+        ArrayList<SolicitudCalificacion> listaClonada = new ArrayList<SolicitudCalificacion>(20);
+
+        // temporal para no afectar la lista temporal
+        IQueue<SolicitudCalificacion> colaAuxiliar = new LinkedListQueue<>();
+        
+        try {
+            while (!colaSolicitudes.isEmpty()) {
+                SolicitudCalificacion sol = colaSolicitudes.dequeue();
+                listaClonada.append(sol);        
+                colaAuxiliar.enqueue(sol);    
+            }
+            
+            // restaurar la original 
+            while (!colaAuxiliar.isEmpty()) {
+                colaSolicitudes.enqueue(colaAuxiliar.dequeue());
+            }
+            
+        } catch (QueueException e) {
+            throw new ControlException("Error al leer las solicitudes pendientes: " + e.getMessage());
+        }
+        
+        return listaClonada;
     }
 }

@@ -4,6 +4,7 @@ import dominio.Accion;
 import dominio.Calificacion;
 import dominio.Curso;
 import dominio.Estudiante;
+import dominio.SolicitudCalificacion;
 import excepciones.ControlException;
 import excepciones.ListException;
 import excepciones.StackException;
@@ -101,7 +102,7 @@ public class Control {
     public ArrayList<Estudiante> consultarEstudiantes() {
         return ce.obtenerEstudiantes();
     }
-    
+
     /**
      * Consulta a un estudiante por su matrícula
      * @param matricula la matrícula del estudiante
@@ -199,6 +200,21 @@ public class Control {
         Curso curso = cc.consultarCurso(claveCurso);
         ci.bajaEstudiante(matricula, claveCurso);
         pilaAcciones.push(Accion.desinscribirEstudiante(estudiante,curso));
+    }
+    public ArrayList<SolicitudCalificacion> consultarSolicitudes(){
+        return ccal.obtenerSolicitudesPendientes();
+
+    }
+
+    public void enviarSolicitudCalificacion(String matricula, String claveCurso, double calificacion) {
+        ccal.enviarSolicitud(matricula, claveCurso, calificacion);
+    }
+
+    /**
+     * Procesa la siguiente solicitud de calificación pendiente
+     */
+    public void procesarSiguienteSolicitudCalificacion() {
+        ccal.procesarSiguienteSolicitud();
     }
 
     /**
