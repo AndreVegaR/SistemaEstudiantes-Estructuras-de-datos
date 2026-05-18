@@ -160,7 +160,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTreeComun<T
     * @return Una lista de tipo List<T> con los elementos del árbol
     */
    public ArrayList<T> toList() {
-        ArrayList<T> lista = new ArrayList<>(1);
+        ArrayList<T> lista = new ArrayList<>(100000);
         Iterator<T> iter = getInorderIterator();
         while (iter.hasNext()) {
             lista.append(iter.next());

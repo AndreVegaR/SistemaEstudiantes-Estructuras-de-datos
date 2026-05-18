@@ -17,10 +17,12 @@ import listas.CircularLinkedList;
  */
 public class ControlEstudiantes {
     private BinarySearchTree<Estudiante> arbolMatriculas;
+    private ArbolAVL<String, Double> arbolPromedios;
     
     private static ControlEstudiantes instancia;
     private ControlEstudiantes(){
         arbolMatriculas = new BinarySearchTree();
+        arbolPromedios = new ArbolAVL();
     }
     
     
@@ -104,6 +106,7 @@ public class ControlEstudiantes {
         
         try {
             arbolMatriculas.insert(estudiante);
+            arbolPromedios.insert(estudiante.getMatricula(), estudiante.promediar());
         } catch (Exception e) {
             throw new ControlException("Error al insertar en el árbol: " + e.getMessage());
         }
@@ -122,11 +125,18 @@ public class ControlEstudiantes {
         }
         try {
             arbolMatriculas.remove(estudiante);
+            arbolPromedios.remove(estudiante.getMatricula());
         } catch (Exception e) {
             throw new ControlException(e);
         } 
     }
     
+    /**
+     * Elimina una calificación
+     * 
+     * @param estudiante
+     * @param curso 
+     */
     public void eliminarCalificacion(Estudiante estudiante, Curso curso) {
         if (curso == null || estudiante == null) {
             throw new ControlException("Datos inválidos");
@@ -135,6 +145,15 @@ public class ControlEstudiantes {
             throw new ControlException("No existe el estudiante");
         }
         estudiante.eliminarCalificacion(curso);
+    }
+    
+    /**
+     * Obtiene los estudiantes por promedio
+     * 
+     * @return estudiantes
+     */
+    public ArrayList<Estudiante> obtenerEstudiantesPromedio() {
+        return arbolMatriculas.toList();
     }
     
     /**

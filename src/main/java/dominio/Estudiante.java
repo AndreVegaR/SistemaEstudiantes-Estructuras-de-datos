@@ -192,18 +192,18 @@ public class Estudiante implements Comparable<Estudiante> {
      * 
      * @return 
      */
-    public int promediar() {
+    public Double promediar() {
         if (calificaciones.empty()) {
-            return 0;
+            return 0.0;
         }
-        int sumaTotal = sumarRecursivo(0);
+        Double sumaTotal = sumarRecursivo(0);
         return sumaTotal / calificaciones.size();
     }
     
-    private int sumarRecursivo(int indice) {
+    private Double sumarRecursivo(int indice) {
         //Si llega al tamaño de la lista, ya no hay más qué sumar
         if (indice == calificaciones.size()) {
-            return 0;
+            return 0.0;
         }
 
         //Suma el valor actual más el de la llamada

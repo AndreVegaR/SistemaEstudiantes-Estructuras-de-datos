@@ -4,8 +4,12 @@ import dominio.Accion;
 import dominio.Calificacion;
 import dominio.Curso;
 import dominio.Estudiante;
+import excepciones.ControlException;
+import excepciones.ListException;
+import excepciones.StackException;
 import listas.ArrayList;
 import listas.DoubleLinkedList;
+import pantallas.PantallaReporteEstudiantes;
 import pilas.IStack;
 import pilas.LinkedListStack;
 
@@ -67,9 +71,22 @@ public class Control {
         cp.navegarPantallaEstudiantes();
     }
     
+    /** Navega a la pantalla de calificaciones */
     public void navegarPantallaCalificaciones(){
         cp.navegarPantallaCalificaciones();
     }
+    
+    /** Navega a los estudiantes por promedio */
+    public void navegarPantallaReporteEstudiantes() {
+        cp.navegarPantallaReporteEstudiantes();
+    }
+    
+    /** Navega a la pantalla de inscripciones */
+    public void navegarPantallaInscripciones() {
+        cp.navegarPantallaInscripciones();
+    }
+    
+    
     /**
      * Consulta todos los estudiantes
      * 
@@ -107,23 +124,15 @@ public class Control {
         pilaAcciones.push(Accion.eliminarEstudiante(estudiante));
         ce.eliminarEstudiante(estudiante);
     }
-
+    
     /**
-     * Agrega calificación a estudiante
-     *
-     * @param calificacion calificación
-     * @param matricula matrícula estudiante
-     * @return estudiante actualizado
+     * Obtiene los estudiantes por promedio
+     * 
+     * @return estudiantes
      */
-    //Este método va en el control de calificaciones, no en el de estudiantes
-    //public Estudiante agregarCalificacion(Calificacion calificacion, String matricula) {
-    //    Estudiante estudiante = ce.agregarCalificacion(calificacion, matricula);
-    //    pilaAcciones.push(Accion.agregarCalificacion(estudiante,calificacion));
-    //    return estudiante;
-    //}
-
-    
-    
+    public ArrayList<Estudiante> obtenerEstudiantesPromedio() {
+        return ce.obtenerEstudiantesPromedio();
+    }
     
     /**
      * Agrega curso
@@ -198,35 +207,40 @@ public class Control {
     /**
      * Lo que pidió el vega
      */
-    public void deshacerUltimaAccion() {
+    public Accion deshacerUltimaAccion() {
+        
+        try {
+        Accion accion = pilaAcciones.pop();    
+            switch (accion.getTipo()) {
+                case REGISTRAR_ESTUDIANTE ->
+                    ce.eliminarEstudiante(accion.getEstudiante());
 
-        Accion accion = pilaAcciones.pop();
+                case ELIMINAR_ESTUDIANTE ->
+                    ce.agregarEstudiante(accion.getEstudiante());
 
-        switch (accion.getTipo()) {
-            case REGISTRAR_ESTUDIANTE ->
-                ce.eliminarEstudiante(accion.getEstudiante());
+                case AGREGAR_CURSO ->
+                    cc.eliminarCurso(accion.getCurso());
 
-            case ELIMINAR_ESTUDIANTE ->
-                ce.agregarEstudiante(accion.getEstudiante());
+                case ELIMINAR_CURSO ->
+                    cc.agregarCurso(accion.getCurso());
 
-            case AGREGAR_CURSO ->
-                cc.eliminarCurso(accion.getCurso());
+                case INSCRIBIR_ESTUDIANTE ->
+                    ci.bajaEstudiante(
+                            accion.getEstudiante().getMatricula(),
+                            accion.getCurso().getClave()
+                    );
 
-            case ELIMINAR_CURSO ->
-                cc.agregarCurso(accion.getCurso());
+                case DESINSCRIBIR_ESTUDIANTE ->
+                    ci.inscribirEstudiante(
+                            accion.getEstudiante().getMatricula(),
+                            accion.getCurso().getClave()
+                    );
 
-            case INSCRIBIR_ESTUDIANTE ->
-                ci.bajaEstudiante(
-                        accion.getEstudiante().getMatricula(),
-                        accion.getCurso().getClave()
-                );
+            }
 
-            case DESINSCRIBIR_ESTUDIANTE ->
-                ci.inscribirEstudiante(
-                        accion.getEstudiante().getMatricula(),
-                        accion.getCurso().getClave()
-                );
-
+            return accion;
+        } catch (StackException e) {
+            throw new ControlException("No hay acciones para deshacer");
         }
     }
 }

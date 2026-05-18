@@ -299,4 +299,29 @@ public class ArbolAVL<K extends Comparable<K>, V> {
             inOrderToList(nodo.hijoDerecho, lista);
         }
     }
+    
+    /**
+     * Cuenta el número total de elementos en el árbol de forma recursiva
+     * @return Cantidad de nodos
+     */
+    public int size() {
+        return size(raiz);
+    }
+
+    private int size(Nodo nodo) {
+        if (nodo == null) {
+            return 0;
+        }
+        return 1 + size(nodo.hijoIzquierdo) + size(nodo.hijoDerecho);
+    }
+
+    /**
+     * Convierte todo el contenido del árbol AVL en una lista usando un recorrido In-Order
+     * @return Un ArrayList con los valores ordenados de forma ascendente
+     */
+    public ArrayList<V> toList() {
+        ArrayList<V> listaResultado = new ArrayList<>(this.size());
+        inOrderToList(raiz, listaResultado);
+        return listaResultado;
+    }
 }

@@ -1,6 +1,8 @@
 package pantallas;
 
 import controles.Control;
+import dominio.Accion;
+import excepciones.ControlException;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
@@ -16,7 +18,6 @@ public class MenuPrincipal extends JFrame {
     private static final Control control = Control.singleton();
     private final Color VERDE_ESCOLAR = Constantes.VERDE_ESCOLAR;
     private final Color FONDO_GRIS = new Color(245, 247, 250);
-    private static final Color VERDE_CLARO_HOVER = new Color(230, 245, 235);
     
     public MenuPrincipal() {
         FachadaUtil.configurarFrame("Sistema de Gestión Estudiantil", this);
@@ -60,7 +61,7 @@ public class MenuPrincipal extends JFrame {
         
         //Crea el botón de inscripciones
         JButton botonInscripciones = FachadaUtil.crearBotonPrincipal("Inscripciones");
-        botonInscripciones.addActionListener(e -> System.out.println(""));
+        botonInscripciones.addActionListener(e -> control.navegarPantallaInscripciones());
         gbc.gridx = 2; gbc.gridy = 0;
         panelBotones.add(botonInscripciones, gbc);
         
@@ -72,13 +73,13 @@ public class MenuPrincipal extends JFrame {
         
         //Crea el botón de acciones
         JButton botonAcciones = FachadaUtil.crearBotonPrincipal("Revertir cambio");
-        botonAcciones.addActionListener(e -> System.out.println(""));
+        botonAcciones.addActionListener(e -> confimarDeshacer());
         gbc.gridx = 4; gbc.gridy = 0;
         panelBotones.add(botonAcciones, gbc);
         
         //Crea el botón de reportes
         JButton botonReportes = FachadaUtil.crearBotonPrincipal("Reportes");
-        botonReportes.addActionListener(e -> System.out.println(""));
+        botonReportes.addActionListener(e -> control.navegarPantallaReporteEstudiantes());
         gbc.gridx = 5; gbc.gridy = 0;
         panelBotones.add(botonReportes, gbc);
         
@@ -95,5 +96,17 @@ public class MenuPrincipal extends JFrame {
         panelNorteCompleto.add(header, BorderLayout.NORTH);
         add(panelNorteCompleto, BorderLayout.NORTH);
         add(contenedorCentral, BorderLayout.CENTER);
+    }
+    
+    /** Maneja la confirmación para deshacer una acción */
+    public void confimarDeshacer() {
+        FachadaUtil.dialogoConfirmacion(MenuPrincipal.this, "¿Deshacer la última acción?", () -> {
+            try {
+                Accion accion = control.deshacerUltimaAccion();
+                FachadaUtil.dialogoAviso(MenuPrincipal.this, "Acción deshecha: " + accion.toString()); 
+            } catch (ControlException e) {
+                FachadaUtil.dialogoError(MenuPrincipal.this, e.getMessage());
+            }
+        });
     }
 }

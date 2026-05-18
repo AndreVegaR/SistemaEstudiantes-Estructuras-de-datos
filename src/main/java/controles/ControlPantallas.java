@@ -6,6 +6,8 @@ import pantallas.MenuPrincipal;
 import pantallas.PantallaCursos;
 import pantallas.PantallaEstudiantes;
 import pantallas.PantallaCalificaciones;
+import pantallas.PantallaInscripciones;
+import pantallas.PantallaReporteEstudiantes;
 /**
  * Control encargado del flujo de navegación del
  * sistema, abriendo y cerrando frames y diálogos
@@ -51,8 +53,19 @@ public class ControlPantallas {
         navegar(PantallaEstudiantes::new);
     }
     
+    /** Navega a la pantalla de calificaciones */
     public void navegarPantallaCalificaciones(){
         navegar(PantallaCalificaciones::new);
+    }
+     
+    /** Navega a los estudiantes por promedio */
+    public void navegarPantallaReporteEstudiantes() {
+        navegar(PantallaReporteEstudiantes::new);
+    }
+    
+    /** Navega a la pantalla de inscripciones */
+    public void navegarPantallaInscripciones() {
+        navegar(PantallaInscripciones::new);
     }
     
     /**

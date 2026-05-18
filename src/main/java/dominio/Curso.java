@@ -36,6 +36,9 @@ public class Curso {
      * @param estudiante a agregar
      */
     public void agregarEstudiante(Estudiante estudiante) {
+        if (capacidad == estudiantes.size()) {
+            throw new ListException("Curso lleno");
+        }
         estudiantes.append(estudiante);
         listaRoles.append(estudiante);
     }
