@@ -10,7 +10,7 @@ import excepciones.ListException;
 import excepciones.StackException;
 import listas.ArrayList;
 import listas.DoubleLinkedList;
-import observadores.IObservador;
+import observadores.*;
 import pantallas.PantallaReporteEstudiantes;
 import pilas.IStack;
 import pilas.LinkedListStack;
@@ -89,8 +89,13 @@ public class Control {
     }
     
     /** Diálogo para buscar por matrícula */
-    public void abrirBuscarEstudiante(IObservador observador) {
-        cp.abrirBuscarEstudiante(observador);
+    public void abrirBuscarEstudiante(IObservador observador, IRemovedor removedor) {
+        cp.abrirBuscarEstudiante(observador, removedor);
+    }
+    
+    /** Diálogo para consultar la lista de espera de un curso */
+    public void abrirListaEspera(Curso curso) {
+        cp.abrirListaEspera(curso);
     }
     
   

@@ -108,7 +108,7 @@ public class PantallaEstudiantes extends JFrame implements IObservador {
         
         btnBuscarMatricula = FachadaUtil.crearBoton("Buscar");
         btnBuscarMatricula.setPreferredSize(new Dimension(130, 32)); 
-        btnBuscarMatricula.addActionListener(e -> control.abrirBuscarEstudiante(this));
+        btnBuscarMatricula.addActionListener(e -> control.abrirBuscarEstudiante(this, null));
 
         panelBotonesAccion.add(btnRegresar);
         panelBotonesAccion.add(btnEliminar);
@@ -185,7 +185,7 @@ public class PantallaEstudiantes extends JFrame implements IObservador {
         btnGuardar = FachadaUtil.crearBotonPrincipal("Guardar");
         btnGuardar.setPreferredSize(new Dimension(110, 35)); 
         btnGuardar.addActionListener(e -> {
-            FachadaUtil.dialogoConfirmacion(PantallaEstudiantes.this, "¿Agregar este curso?", () -> guardarEstudiante());
+            FachadaUtil.dialogoConfirmacion(PantallaEstudiantes.this, "¿Agregar este estudiante?", () -> guardarEstudiante());
         });
 
         panelBotonesControl.add(btnGuardar);

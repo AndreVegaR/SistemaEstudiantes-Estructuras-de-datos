@@ -59,28 +59,22 @@ public class MenuPrincipal extends JFrame {
         gbc.gridx = 1; gbc.gridy = 0;
         panelBotones.add(botonCursos, gbc);
         
-        //Crea el botón de inscripciones
-        JButton botonInscripciones = FachadaUtil.crearBotonPrincipal("Inscripciones");
-        botonInscripciones.addActionListener(e -> control.navegarPantallaInscripciones());
-        gbc.gridx = 2; gbc.gridy = 0;
-        panelBotones.add(botonInscripciones, gbc);
-        
         //Crea el botón de calificaciones
         JButton botonCalificaciones = FachadaUtil.crearBotonPrincipal("Calificaciones");
         botonCalificaciones.addActionListener(e -> control.navegarPantallaCalificaciones());
-        gbc.gridx = 3; gbc.gridy = 0;
+        gbc.gridx = 2; gbc.gridy = 0;
         panelBotones.add(botonCalificaciones, gbc);
         
         //Crea el botón de acciones
         JButton botonAcciones = FachadaUtil.crearBotonPrincipal("Revertir cambio");
         botonAcciones.addActionListener(e -> confimarDeshacer());
-        gbc.gridx = 4; gbc.gridy = 0;
+        gbc.gridx = 3; gbc.gridy = 0;
         panelBotones.add(botonAcciones, gbc);
         
         //Crea el botón de reportes
         JButton botonReportes = FachadaUtil.crearBotonPrincipal("Reportes");
         botonReportes.addActionListener(e -> control.navegarPantallaReporteEstudiantes());
-        gbc.gridx = 5; gbc.gridy = 0;
+        gbc.gridx = 4; gbc.gridy = 0;
         panelBotones.add(botonReportes, gbc);
         
         //Crea el botón inferior

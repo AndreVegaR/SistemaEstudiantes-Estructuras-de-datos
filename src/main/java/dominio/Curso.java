@@ -25,9 +25,7 @@ public class Curso {
         this.capacidad = capacidad;
         this.estudiantes = new LinkedList();
         this.listaRoles = new CircularLinkedList();
-        estudiantes = new LinkedList<>();
-        listaRoles = new CircularLinkedList<>();
-        listaEspera = new DoubleCircularLinkedList<>();
+        this.listaEspera = new DoubleCircularLinkedList<>();
     }
     
      public String mostrarEstudiantes() {
@@ -46,6 +44,15 @@ public class Curso {
     
     public Estudiante getLider() {
         return listaRoles.actual();
+    }
+    
+    
+    public void agregarListaEspera(Estudiante estudiante) {
+        listaEspera.append(estudiante);
+    }
+    
+    public void eliminarListaEspera(Estudiante estudiante) {
+        listaEspera.remove(estudiante);
     }
     
     /**
@@ -121,10 +128,28 @@ public class Curso {
     public void setCapacidad(int capacidad) {
         this.capacidad = capacidad;
     }
+    
+    public boolean lleno() {
+        return capacidad == estudiantes.size();
+    }
+    
+    public boolean existeEstudiante(Estudiante e) {
+        for (int i = 0; i < estudiantes.size(); i++) {
+            if (estudiantes.get(i).equals(e)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean existeEsperando(Estudiante e) {
+        return listaEspera.indexOf(e) != -1;
+    }
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 5;
+        hash = 89 * hash + Objects.hashCode(this.clave);
         return hash;
     }
 
@@ -141,7 +166,5 @@ public class Curso {
         }
         final Curso other = (Curso) obj;
         return Objects.equals(this.clave, other.clave);
-    }
-    
-    
+    } 
 }

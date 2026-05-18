@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import observadores.IObservador;
+import observadores.IRemovedor;
 import utilerias.FachadaUtil;
 
 /**
@@ -17,12 +18,14 @@ import utilerias.FachadaUtil;
 public class BuscarEstudiante extends JDialog {
     Control control = Control.singleton();
     IObservador observador;
+    IRemovedor removedor;
     JTextField txtMatricula;
     
-    public BuscarEstudiante(IObservador observador) {
+    public BuscarEstudiante(IObservador observador, IRemovedor removedor) {
         FachadaUtil.configurarDialogoInicio(this, "Buscar estudiante por matrícula");
         
         this.observador = observador;
+        this.removedor = removedor;
         
         JPanel panel = new JPanel();
         
@@ -50,6 +53,13 @@ public class BuscarEstudiante extends JDialog {
         } catch (ControlException e) {
             FachadaUtil.dialogoError(BuscarEstudiante.this, "No existe un estudiante con la matrícula " + matricula);
         }
-        observador.observar(estudiante);
+        
+        //Notifica
+        if (observador != null) {
+            observador.observar(estudiante);
+        }
+        if (removedor != null) {
+            removedor.remover(estudiante);
+        }
     }
 }

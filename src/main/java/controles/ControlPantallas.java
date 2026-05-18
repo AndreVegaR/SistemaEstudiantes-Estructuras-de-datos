@@ -1,10 +1,13 @@
 package controles;
 
+import dominio.Curso;
 import java.util.function.Supplier;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import observadores.IObservador;
+import observadores.IRemovedor;
 import pantallas.BuscarEstudiante;
+import pantallas.ListaEspera;
 import pantallas.MenuPrincipal;
 import pantallas.PantallaCursos;
 import pantallas.PantallaEstudiantes;
@@ -72,8 +75,13 @@ public class ControlPantallas {
     }
     
     /** Diálogo para buscar por matrícula */
-    public void abrirBuscarEstudiante(IObservador observador) {
-        abrirDialogo(() -> new BuscarEstudiante(observador));
+    public void abrirBuscarEstudiante(IObservador observador, IRemovedor removedor) {
+        abrirDialogo(() -> new BuscarEstudiante(observador, removedor));
+    }
+    
+    /** Diálogo para consultar la lista de espera de un curso */
+    public void abrirListaEspera(Curso curso) {
+        abrirDialogo(() -> new ListaEspera(curso));
     }
     
     /**

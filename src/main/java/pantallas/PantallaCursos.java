@@ -10,13 +10,14 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import listas.DoubleLinkedList;
-import observadores.IObservador;
+import observadores.*;
 import utilerias.FachadaUtil;
 import utilerias.UtilFormato;
 
-public class PantallaCursos extends JFrame implements IObservador {
+public class PantallaCursos extends JFrame implements IObservador, IRemovedor {
     private JTable tablaCursos;
-    private JButton btnRegresar, btnEliminar, btnVerDetalles, btnAgregarEstudiante;
+    private JButton btnRegresar, btnEliminar, btnVerDetalles;
+    private JButton btnAgregarEstudiante, btnRemoverEstudiante, btnRotarLider;
     private JTextField txtClave, txtNombre, txtCapacidad;
     private JButton btnGuardar;
     private Control control = Control.singleton();
@@ -83,22 +84,64 @@ public class PantallaCursos extends JFrame implements IObservador {
         });
         btnEliminar.setPreferredSize(new Dimension(130, 32)); 
         
-        btnVerDetalles = FachadaUtil.crearBoton("Detalles");
-        btnVerDetalles.setPreferredSize(new Dimension(130, 32)); 
-        
-        btnAgregarEstudiante = FachadaUtil.crearBoton("Agregar estudiante");
-        btnAgregarEstudiante.addActionListener(e -> {
-            if (obtenerCursoSeleccionado() == null) {
+        btnVerDetalles = FachadaUtil.crearBoton("Espera");
+        btnVerDetalles.addActionListener(e -> {
+            Curso curso = obtenerCursoSeleccionado();
+            if (curso == null) {
                 FachadaUtil.dialogoAlerta(PantallaCursos.this, "Seleccione un curso primero");
                 return;
             }
-            control.abrirBuscarEstudiante(this);
+            control.abrirListaEspera(curso);
         });
+        btnVerDetalles.setPreferredSize(new Dimension(130, 32)); 
+        
+        
+        btnRemoverEstudiante = FachadaUtil.crearBoton("E. estudiante");
+        btnRemoverEstudiante.setPreferredSize(new Dimension(130, 32)); 
+        btnRemoverEstudiante.addActionListener(e -> {
+            Curso curso = obtenerCursoSeleccionado();
+            if (curso == null) {
+                FachadaUtil.dialogoAlerta(PantallaCursos.this, "Seleccione un curso primero");
+                return;
+            }
+            control.abrirBuscarEstudiante(null, this);
+        });
+        
+        btnAgregarEstudiante = FachadaUtil.crearBoton("A. estudiante");
+        btnAgregarEstudiante.setPreferredSize(new Dimension(130, 32)); 
+        btnAgregarEstudiante.addActionListener(e -> {
+            Curso curso = obtenerCursoSeleccionado();
+            if (curso == null) {
+                FachadaUtil.dialogoAlerta(PantallaCursos.this, "Seleccione un curso primero");
+                return;
+            }
+            control.abrirBuscarEstudiante(this, null);
+        });
+        
+        btnRotarLider = FachadaUtil.crearBoton("Rotar líder");
+        btnRotarLider.setPreferredSize(new Dimension(130, 32)); 
+        btnRotarLider.addActionListener(e -> {
+            Curso curso = obtenerCursoSeleccionado();
+            if (curso == null) {
+                FachadaUtil.dialogoAlerta(PantallaCursos.this, "Seleccione un curso primero");
+                return;
+            }
+            if (curso.getEstudiantes().empty()) {
+                FachadaUtil.dialogoAlerta(PantallaCursos.this, "Curso vacío");
+                return;
+            }
+            curso.rotarLider();
+            FachadaUtil.dialogoAviso(PantallaCursos.this, "Ahora el nuevo líder es: " + curso.getLider().nombreCompleto());
+            cargarDatos();
+        });
+        
         
         panelBotonesAccion.add(btnRegresar);
         panelBotonesAccion.add(btnEliminar);
-        panelBotonesAccion.add(btnVerDetalles);
         panelBotonesAccion.add(btnAgregarEstudiante);
+        panelBotonesAccion.add(btnVerDetalles);
+        panelBotonesAccion.add(btnRemoverEstudiante);
+        panelBotonesAccion.add(btnRotarLider);
         
         panelIzquierdo.add(panelBotonesAccion, BorderLayout.SOUTH);
 
@@ -106,7 +149,7 @@ public class PantallaCursos extends JFrame implements IObservador {
         
         return panelIzquierdo;
     }
-
+    
     private JPanel crearPanelDerechoInscripcion() {
         JPanel panelDerecho = FachadaUtil.crearPanel();
         panelDerecho.setLayout(new BorderLayout());
@@ -207,6 +250,7 @@ public class PantallaCursos extends JFrame implements IObservador {
             txtNombre.getText(),
             Integer.valueOf(capacidad)       
         );
+        System.out.println("Se creó el curso: " + curso.getCapacidad());
         
         try {
             control.agregarCurso(curso);
@@ -235,9 +279,36 @@ public class PantallaCursos extends JFrame implements IObservador {
     public void observar(Estudiante e) {
         Curso curso = obtenerCursoSeleccionado();
         if (curso != null) {
-            curso.agregarEstudiante(e);
-            e.agregarCalificacion(new Calificacion(0, e, curso));
-            cargarDatos();
+            if (curso.lleno()) {
+                if (curso.existeEstudiante(e)) {
+                    FachadaUtil.dialogoAviso(PantallaCursos.this, "Ya existe el estudiante en el curso");
+                    return;
+                }
+                FachadaUtil.dialogoAviso(PantallaCursos.this, "Curso lleno. Enviando a la lista de espera...");
+                curso.agregarListaEspera(e);
+            } else {
+                try {
+                    control.inscribirEstudiante(e.getMatricula(), curso.getClave());
+                    e.agregarCalificacion(new Calificacion(0, e, curso));
+                    cargarDatos();
+                } catch (ControlException ex) {
+                    FachadaUtil.dialogoError(PantallaCursos.this, ex.getMessage());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void remover(Estudiante e) {
+        Curso curso = obtenerCursoSeleccionado();
+        if (curso != null) {
+            try {
+                control.bajaEstudianteCurso(e.getMatricula(), curso.getClave());
+                e.eliminarCalificacion(curso);
+                cargarDatos();
+            } catch (ControlException ex) {
+                FachadaUtil.dialogoError(PantallaCursos.this, ex.getMessage());
+            }
         }
     }
 }

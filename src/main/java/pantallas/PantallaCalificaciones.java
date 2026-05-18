@@ -1,6 +1,8 @@
 package pantallas;
 
 import controles.Control;
+import dominio.Curso;
+import dominio.Estudiante;
 import dominio.SolicitudCalificacion;
 import excepciones.ControlException;
 import java.awt.*;
@@ -160,6 +162,27 @@ public class PantallaCalificaciones extends JFrame {
             FachadaUtil.dialogoAlerta(this, "Todos los campos son obligatorios");
             return;
         }
+        
+        Estudiante estudiante = null;
+        Curso curso;
+        
+        try {
+            estudiante = control.consultarEstudiante(matricula);
+        } catch (ControlException e) {
+            FachadaUtil.dialogoAlerta(this, e.getMessage());
+            return;
+        }
+        
+        curso = control.consultarCurso(claveCurso);
+        if (control.consultarCurso(claveCurso) == null) {
+            FachadaUtil.dialogoAlerta(this, "No existe ese curso");
+            return;
+        }
+        
+        if (!curso.existeEstudiante(estudiante)) {
+            FachadaUtil.dialogoAlerta(this, "El estudiante no está en el curso");
+            return;
+        }
 
         double calificacion;
         try {
@@ -175,8 +198,6 @@ public class PantallaCalificaciones extends JFrame {
         }
 
         try {
-            // Enviar la solicitud al control
-            // Necesitarás agregar este método a tu clase Control
             control.enviarSolicitudCalificacion(matricula, claveCurso, calificacion);
             
             FachadaUtil.dialogoAviso(this, "Solicitud enviada correctamente");
