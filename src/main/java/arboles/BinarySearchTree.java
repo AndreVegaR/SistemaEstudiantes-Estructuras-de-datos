@@ -19,7 +19,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends BinaryTreeComun<T
     * @param <T> Parámetro de tipo para los objetos a almacenarse
     * en el arbol
     */
-    class InorderIterator implements Iterator<T>{
+    class InorderIterator implements Iterator<T> {
         private LinkedListStack<NodoArbolBinario<T>> pilaNodos;
         private NodoArbolBinario<T> nodoActual;
         

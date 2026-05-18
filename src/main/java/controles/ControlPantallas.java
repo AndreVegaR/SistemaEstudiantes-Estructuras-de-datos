@@ -1,7 +1,10 @@
 package controles;
 
 import java.util.function.Supplier;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import observadores.IObservador;
+import pantallas.BuscarEstudiante;
 import pantallas.MenuPrincipal;
 import pantallas.PantallaCursos;
 import pantallas.PantallaEstudiantes;
@@ -68,6 +71,11 @@ public class ControlPantallas {
         navegar(PantallaInscripciones::new);
     }
     
+    /** Diálogo para buscar por matrícula */
+    public void abrirBuscarEstudiante(IObservador observador) {
+        abrirDialogo(() -> new BuscarEstudiante(observador));
+    }
+    
     /**
      * Método privado que centraliza la navegación
      * 
@@ -97,7 +105,12 @@ public class ControlPantallas {
 
         //Cierra la ventana anterior
         if (ventanaAnterior != null) {
-            ventanaAnterior.dispose();
+            ventanaAnterior.setVisible(false);
         }
+    }
+    
+    public void abrirDialogo(Supplier<? extends JDialog> formulario) {
+        JDialog dialogo = formulario.get();
+        dialogo.setVisible(true);
     }
 }

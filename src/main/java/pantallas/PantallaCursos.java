@@ -1,19 +1,22 @@
 package pantallas;
 
 import controles.Control;
+import dominio.Calificacion;
 import dominio.Curso;
+import dominio.Estudiante;
 import excepciones.ControlException;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import listas.DoubleLinkedList;
+import observadores.IObservador;
 import utilerias.FachadaUtil;
 import utilerias.UtilFormato;
 
-public class PantallaCursos extends JFrame {
+public class PantallaCursos extends JFrame implements IObservador {
     private JTable tablaCursos;
-    private JButton btnRegresar, btnEliminar, btnVerDetalles;
+    private JButton btnRegresar, btnEliminar, btnVerDetalles, btnAgregarEstudiante;
     private JTextField txtClave, txtNombre, txtCapacidad;
     private JButton btnGuardar;
     private Control control = Control.singleton();
@@ -46,7 +49,7 @@ public class PantallaCursos extends JFrame {
         panelIzquierdo.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         // Configurar Tabla
-        String[] columnas = {"Clave del curso", "Nombre del curso", "Capacidad", "Cantidad de alumnos"};
+        String[] columnas = {"Clave del curso", "Nombre del curso", "Capacidad", "Cantidad de alumnos", "Líder"};
         tablaCursos = FachadaUtil.crearTabla(columnas);
         JScrollPane scrollTabla = new JScrollPane(tablaCursos);
         scrollTabla.getViewport().setBackground(Color.WHITE);
@@ -82,10 +85,20 @@ public class PantallaCursos extends JFrame {
         
         btnVerDetalles = FachadaUtil.crearBoton("Detalles");
         btnVerDetalles.setPreferredSize(new Dimension(130, 32)); 
-
+        
+        btnAgregarEstudiante = FachadaUtil.crearBoton("Agregar estudiante");
+        btnAgregarEstudiante.addActionListener(e -> {
+            if (obtenerCursoSeleccionado() == null) {
+                FachadaUtil.dialogoAlerta(PantallaCursos.this, "Seleccione un curso primero");
+                return;
+            }
+            control.abrirBuscarEstudiante(this);
+        });
+        
         panelBotonesAccion.add(btnRegresar);
         panelBotonesAccion.add(btnEliminar);
         panelBotonesAccion.add(btnVerDetalles);
+        panelBotonesAccion.add(btnAgregarEstudiante);
         
         panelIzquierdo.add(panelBotonesAccion, BorderLayout.SOUTH);
 
@@ -175,7 +188,8 @@ public class PantallaCursos extends JFrame {
                 curso.getClave(),
                 curso.getNombre(),
                 curso.getCapacidad(),
-                curso.getEstudiantes().size()
+                curso.getEstudiantes().size(),
+                curso.getLider() != null ? curso.getLider().nombreCompleto() : "Sin líder"
             };
             modelo.addRow(fila);
         }
@@ -215,5 +229,15 @@ public class PantallaCursos extends JFrame {
         }
         DoubleLinkedList<Curso> cursos = control.obtenerCursos();
         return cursos.get(filaSeleccionada);
+    }
+
+    @Override
+    public void observar(Estudiante e) {
+        Curso curso = obtenerCursoSeleccionado();
+        if (curso != null) {
+            curso.agregarEstudiante(e);
+            e.agregarCalificacion(new Calificacion(0, e, curso));
+            cargarDatos();
+        }
     }
 }

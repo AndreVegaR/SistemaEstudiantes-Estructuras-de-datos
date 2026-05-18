@@ -53,6 +53,17 @@ public class Estudiante implements Comparable<Estudiante> {
     public Estudiante() {}
     
     
+    public String mostrarCalificaciones() {
+        String resultado = "Calificaciones de " + this.nombreCompleto() + " (" + this.matricula + "):\n";
+        for (int i = 0; i < calificaciones.size(); i++) {
+            Calificacion c = calificaciones.get(i);
+            String calificacion = c.getCurso().getNombre() + ": " + c.getValor();
+            resultado += "- " + calificacion + "\n"; 
+        }
+        return resultado;
+    }
+    
+    
     /** Agrega una calificación al estudiante */
     public void agregarCalificacion(Calificacion calificacion) {
         if (calificacion.getValor() < 0) {
@@ -74,6 +85,17 @@ public class Estudiante implements Comparable<Estudiante> {
             }
         }
     }
+    
+    public int calificacionCurso(Curso curso) {
+        for (int i = 0; i < calificaciones.size(); i++) {
+            Calificacion c = calificaciones.get(i);
+            if (c.getCurso().equals(curso)) {
+                return c.getValor();
+            }
+        }
+        return 0;
+    }
+    
     public ArrayList<Calificacion> getCalificaciones() {
         return calificaciones;
     }

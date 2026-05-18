@@ -9,6 +9,7 @@ import excepciones.ListException;
 import excepciones.StackException;
 import listas.ArrayList;
 import listas.DoubleLinkedList;
+import observadores.IObservador;
 import pantallas.PantallaReporteEstudiantes;
 import pilas.IStack;
 import pilas.LinkedListStack;
@@ -86,7 +87,12 @@ public class Control {
         cp.navegarPantallaInscripciones();
     }
     
+    /** Diálogo para buscar por matrícula */
+    public void abrirBuscarEstudiante(IObservador observador) {
+        cp.abrirBuscarEstudiante(observador);
+    }
     
+  
     /**
      * Consulta todos los estudiantes
      * 

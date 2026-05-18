@@ -162,7 +162,7 @@ public class CircularLinkedList<T> extends LinkedList<T> {
     
     public T actual() {
         if (actual == null) {
-            throw new ListException("Lista vacía");
+            return null;
         }
         return actual.getDato();
     }

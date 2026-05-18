@@ -30,6 +30,24 @@ public class Curso {
         listaEspera = new DoubleCircularLinkedList<>();
     }
     
+     public String mostrarEstudiantes() {
+        String resultado = "Estudiantes del curso " + this.nombre + " (" + this.clave + "):\n";
+        for (int i = 0; i < estudiantes.size(); i++) {
+            Estudiante e = estudiantes.get(i);
+            String estudiante = e.nombreCompleto() + " (" + e.getMatricula() + "): " + e.calificacionCurso(this);
+            resultado += "- " + estudiante + "\n"; 
+        }
+        return resultado;
+    }
+    
+    public void rotarLider() {
+        listaRoles.rotar();
+    }
+    
+    public Estudiante getLider() {
+        return listaRoles.actual();
+    }
+    
     /**
      * Maneja la inserción de estudiantes
      * 

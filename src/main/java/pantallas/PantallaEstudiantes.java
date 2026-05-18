@@ -5,17 +5,22 @@ import dominio.Curso;
 import dominio.Estudiante;
 import excepciones.ControlException;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import listas.ArrayList;
 import listas.DoubleLinkedList;
+import observadores.IObservador;
 import utilerias.FachadaUtil;
 import utilerias.UtilFormato;
 
-public class PantallaEstudiantes extends JFrame {
+public class PantallaEstudiantes extends JFrame implements IObservador {
     private JTable tabla;
-    private JButton btnRegresar, btnEliminar, btnVerDetalles;
+    private JButton btnRegresar, btnEliminar, btnBuscarMatricula;
     private JTextField txtMatricula;
     private JTextField txtNombres, txtApellidoP, txtApellidoM;
     private JTextField txtTelefono, txtCorreo;
@@ -56,6 +61,22 @@ public class PantallaEstudiantes extends JFrame {
         JScrollPane scrollTabla = new JScrollPane(tabla);
         scrollTabla.getViewport().setBackground(Color.WHITE);
         panelIzquierdo.add(scrollTabla, BorderLayout.CENTER);
+        
+        tabla.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int fila = tabla.rowAtPoint(e.getPoint());
+                    if (fila != -1) {
+                        tabla.setRowSelectionInterval(fila, fila);
+                        Estudiante seleccionado = obtenerEstudianteSeleccionado();
+                        if (seleccionado != null) {
+                            FachadaUtil.dialogoAviso(PantallaEstudiantes.this, seleccionado.mostrarCalificaciones());
+                        }
+                    }
+                }
+            }
+        });
 
         // Panel Inferior de Botones de acción
         JPanel panelBotonesAccion = FachadaUtil.crearPanel();
@@ -75,7 +96,7 @@ public class PantallaEstudiantes extends JFrame {
                 FachadaUtil.dialogoConfirmacion(this, "¿Seguro que deseas eliminar el estudiante " + seleccionado.getNombres() + "?", () -> {
                     try {
                         control.eliminarEstudiante(seleccionado); 
-                        cargarDatos(); 
+                        cargarDatos(control.consultarEstudiantes()); 
                         FachadaUtil.dialogoAviso(this, "Curso eliminado correctamente");
                     } catch (ControlException ex) {
                         FachadaUtil.dialogoError(this, ex.getMessage());
@@ -85,28 +106,28 @@ public class PantallaEstudiantes extends JFrame {
         });
         btnEliminar.setPreferredSize(new Dimension(130, 32)); 
         
-        btnVerDetalles = FachadaUtil.crearBoton("Detalles");
-        btnVerDetalles.setPreferredSize(new Dimension(130, 32)); 
+        btnBuscarMatricula = FachadaUtil.crearBoton("Buscar");
+        btnBuscarMatricula.setPreferredSize(new Dimension(130, 32)); 
+        btnBuscarMatricula.addActionListener(e -> control.abrirBuscarEstudiante(this));
 
         panelBotonesAccion.add(btnRegresar);
         panelBotonesAccion.add(btnEliminar);
-        panelBotonesAccion.add(btnVerDetalles);
+        panelBotonesAccion.add(btnBuscarMatricula);
         
         panelIzquierdo.add(panelBotonesAccion, BorderLayout.SOUTH);
 
-        cargarDatos();
+        cargarDatos(control.consultarEstudiantes());
         
         return panelIzquierdo;
     }
 
-    private JPanel crearPanelDerechoInscripcion() {
+    private Component crearPanelDerechoInscripcion() {
         JPanel panelDerecho = FachadaUtil.crearPanel();
         panelDerecho.setLayout(new BorderLayout());
         panelDerecho.setBackground(Color.WHITE);
         panelDerecho.setBorder(BorderFactory.createLineBorder(new Color(220, 225, 230), 1)); 
 
-        //Encabezado
-        JLabel lblTitulo = new JLabel("       Gestión de cursos");
+        JLabel lblTitulo = new JLabel("        Gestión de cursos");
         lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 14));
         lblTitulo.setForeground(new Color(34, 40, 44));
         lblTitulo.setPreferredSize(new Dimension(200, 50));
@@ -115,17 +136,18 @@ public class PantallaEstudiantes extends JFrame {
         JPanel contenedorCampos = FachadaUtil.crearPanel();
         contenedorCampos.setLayout(new GridBagLayout());
         contenedorCampos.setBackground(Color.WHITE);
-        
+
         TitledBorder bordeInformacion = BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1), "Información del Curso");
-                bordeInformacion.setTitleFont(new Font("Segoe UI", Font.PLAIN, 11));
-                contenedorCampos.setBorder(BorderFactory.createCompoundBorder(
+        bordeInformacion.setTitleFont(new Font("Segoe UI", Font.PLAIN, 11));
+        contenedorCampos.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(10, 15, 15, 15), bordeInformacion));
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(12, 10, 12, 10); 
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        
-        //Crea los campos de texto
+
+
         txtMatricula = FachadaUtil.crearCampoTexto();
         txtNombres = FachadaUtil.crearCampoTexto();
         txtApellidoP = FachadaUtil.crearCampoTexto();
@@ -136,7 +158,7 @@ public class PantallaEstudiantes extends JFrame {
         txtNumero = FachadaUtil.crearCampoTexto();
         txtColonia = FachadaUtil.crearCampoTexto();
         txtCiudad = FachadaUtil.crearCampoTexto();
-        
+
         añadirFilaFormulario(contenedorCampos, "Matrícula", txtMatricula, gbc, 0);
         añadirFilaFormulario(contenedorCampos, "Nombre", txtNombres, gbc, 1);
         añadirFilaFormulario(contenedorCampos, "ApellidoP", txtApellidoP, gbc, 2);
@@ -147,29 +169,37 @@ public class PantallaEstudiantes extends JFrame {
         añadirFilaFormulario(contenedorCampos, "Numero", txtNumero, gbc, 7);
         añadirFilaFormulario(contenedorCampos, "Colonia", txtColonia, gbc, 8);
         añadirFilaFormulario(contenedorCampos, "Ciudad", txtCiudad, gbc, 9);
-        
+
         GridBagConstraints gbcEmpujeV = new GridBagConstraints();
-        gbcEmpujeV.gridy = 5;
-        gbcEmpujeV.weighty = 1.0; 
-        contenedorCampos.add(new Box.Filler(new Dimension(0,0), new Dimension(0,0), new Dimension(0, Short.MAX_VALUE)), gbcEmpujeV);
+        gbcEmpujeV.gridy = 10;
+        gbcEmpujeV.gridx = 0;
+        gbcEmpujeV.gridwidth = 2; 
+        contenedorCampos.add(Box.createVerticalStrut(10), gbcEmpujeV);
 
         panelDerecho.add(contenedorCampos, BorderLayout.CENTER);
+
         JPanel panelBotonesControl = FachadaUtil.crearPanel();
         panelBotonesControl.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 15)); 
         panelBotonesControl.setBackground(Color.WHITE);
-        
-        //Botón para guardar el curso
+
         btnGuardar = FachadaUtil.crearBotonPrincipal("Guardar");
         btnGuardar.setPreferredSize(new Dimension(110, 35)); 
         btnGuardar.addActionListener(e -> {
             FachadaUtil.dialogoConfirmacion(PantallaEstudiantes.this, "¿Agregar este curso?", () -> guardarEstudiante());
         });
-        
-        panelBotonesControl.add(btnGuardar);
 
+        panelBotonesControl.add(btnGuardar);
         panelDerecho.add(panelBotonesControl, BorderLayout.SOUTH);
 
-        return panelDerecho;
+        JScrollPane scrollDerecho = new JScrollPane(panelDerecho);
+        scrollDerecho.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollDerecho.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollDerecho.setBorder(null); 
+        scrollDerecho.getViewport().setBackground(Color.WHITE);
+
+        panelDerecho.setPreferredSize(new Dimension(380, 750)); 
+
+        return scrollDerecho; 
     }
 
     private void añadirFilaFormulario(JPanel panel, String textoLabel, JTextField campo, GridBagConstraints gbc, int fila) {
@@ -185,10 +215,9 @@ public class PantallaEstudiantes extends JFrame {
         panel.add(campo, gbc);
     }
     
-    public void cargarDatos() {
+    public void cargarDatos(ArrayList<Estudiante> estudiantes) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         modelo.setRowCount(0);
-        ArrayList<Estudiante> estudiantes = control.consultarEstudiantes();
         for (int i = 0; i < estudiantes.size(); i++) {
             Estudiante e = estudiantes.get(i);
             Object[] fila = new Object[]{
@@ -223,7 +252,7 @@ public class PantallaEstudiantes extends JFrame {
             FachadaUtil.dialogoError(PantallaEstudiantes.this, e.getMessage());
         }
         
-        cargarDatos();
+        cargarDatos(control.consultarEstudiantes());
     }
     
     private Estudiante obtenerEstudianteSeleccionado() {
@@ -240,5 +269,12 @@ public class PantallaEstudiantes extends JFrame {
             FachadaUtil.dialogoError(this, ex.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public void observar(Estudiante e) {
+        ArrayList<Estudiante> estudiantes = new ArrayList(1);
+        estudiantes.append(e);
+        cargarDatos(estudiantes);
     }
 }

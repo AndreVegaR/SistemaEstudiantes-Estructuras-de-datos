@@ -85,7 +85,7 @@ public class MenuPrincipal extends JFrame {
         
         //Crea el botón inferior
         JButton botonSalir = FachadaUtil.crearBotonPrincipal("Salir");
-        botonSalir.addActionListener(e -> System.out.println(""));
+        botonSalir.addActionListener(e -> salir());
         gbc.gridy = 1; gbc.gridx = 0; gbc.gridwidth = 6;
         gbc.insets = new Insets(25, 10, 10, 10);
         panelBotones.add(botonSalir, gbc);
@@ -106,7 +106,15 @@ public class MenuPrincipal extends JFrame {
                 FachadaUtil.dialogoAviso(MenuPrincipal.this, "Acción deshecha: " + accion.toString()); 
             } catch (ControlException e) {
                 FachadaUtil.dialogoError(MenuPrincipal.this, e.getMessage());
+                return;
             }
+        });
+    }
+    
+    /** Maneja la salida del sistema */
+    public void salir() {
+        FachadaUtil.dialogoConfirmacion(MenuPrincipal.this, "¿Salir del sistema?", () -> {
+            System.exit(0);
         });
     }
 }

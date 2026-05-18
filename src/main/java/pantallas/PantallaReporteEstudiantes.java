@@ -47,7 +47,7 @@ public class PantallaReporteEstudiantes extends JFrame {
         panelIzquierdo.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         // Configurar Tabla
-        String[] columnas = {"Matrícula", "Nombre", "Telefono", "Contacto", "Dirección"};
+        String[] columnas = {"Matrícula", "Nombre", "Telefono", "Contacto", "Dirección", "Promedio"};
         tabla = FachadaUtil.crearTabla(columnas);
         JScrollPane scrollTabla = new JScrollPane(tabla);
         scrollTabla.getViewport().setBackground(Color.WHITE);
@@ -111,7 +111,7 @@ public class PantallaReporteEstudiantes extends JFrame {
     public void cargarDatos() {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         modelo.setRowCount(0);
-        ArrayList<Estudiante> estudiantes = control.consultarEstudiantes();
+        ArrayList<Estudiante> estudiantes = control.obtenerEstudiantesPromedio();
         for (int i = 0; i < estudiantes.size(); i++) {
             Estudiante e = estudiantes.get(i);
             Object[] fila = new Object[]{
@@ -119,7 +119,8 @@ public class PantallaReporteEstudiantes extends JFrame {
                 e.nombreCompleto(),
                 e.getTelefono(),
                 e.getCorreo(),
-                e.direccionCompleta()
+                e.direccionCompleta(),
+                e.promediar()
             };
             modelo.addRow(fila);
         }
